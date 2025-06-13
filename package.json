@@ -1,8 +1,14 @@
 {
   "dependencies": {
     "@sequelize/sqlite3": "^7.0.0-alpha.46",
+    "@types/express": "^5.0.3",
     "@types/sequelize": "^4.28.20",
+    "@types/showdown": "^2.0.6",
+    "dotenv": "^16.5.0",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
     "sequelize": "^6.37.7",
+    "showdown": "^2.1.0",
     "sqlite3": "^5.1.7",
     "tsx": "^4.20.1",
     "typescript": "^5.8.3"

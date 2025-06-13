@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body{
+        background-color: darkslategrey;
+    }
+    hr{
+        max-width: 20lvw;
+        margin-left: 0%;
+    }
+    .root{
+        margin-left: 20lvw;
+        max-width: 70lvw;
+    }
+    .blog-title{
+        font-family: 'Courier New', Courier, monospace;
+        stroke-width: 0.25lvw;
+        font-size: 5.5lvh ;
+        size: 1lvh;
+        color: white;
+        margin-bottom: 0%;
+        padding-bottom: 0%;
+    }
+    .Date{
+
+        padding-top: 0%;
+        margin-top: 0%;
+        
+        color: lightgray;
+    }
+    .topics{
+        font-family:'Courier New', Courier, monospace;
+        color: white;
+    }
+    .blog-content{
+        font-family: 'Courier New', Courier, monospace;
+        stroke-width: 0.25lvw;
+        color: white;
+    }
+
+</style>
+<body>
+
+    <div class="root">
+        <h1 class="blog-title"><%= title %></h1>
+        <p class="Date"><%= created_at%><p>
+            <hr>
+            <div class="topics">
+                <% topics.forEach(topic => { %>
+                    #<%= topic.topic %>
+                <% }) %>
+            </div>
+            
+            
+            <hr>
+        <div class="blog-content">
+            <%- blog_content%>
+        </div>
+    </div>
+    
+</body>
+</html>
