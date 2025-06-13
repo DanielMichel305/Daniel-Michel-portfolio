@@ -78,7 +78,7 @@ export class BlogController{
         }) as BlogPost & {topics : Topic[]}
         if(!blog){
             ///404
-            res.status(404).send("Blog does not exist or was moved.");
+            res.status(404).render("404");
         }
         else{
             let converter =  new Showdown.Converter({headerLevelStart : 2});
