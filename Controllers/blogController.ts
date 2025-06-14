@@ -4,6 +4,7 @@ import { Topic } from '../Models/topics'
 import { BlogRenderSchema, CreateBlogRequestSchema } from '../types/blog.types'
 import Showdown from 'showdown'
 import { UniqueConstraintError } from '@sequelize/core';
+import { col, fn, literal } from 'sequelize'
 
 export class BlogController{
     static async getAllBlogs(req: Request, res: Response){
@@ -11,7 +12,8 @@ export class BlogController{
             const blogs = await BlogPost.findAll({
                 attributes: [
                     'blog_id',
-                    'blogTitle'
+                    'blogTitle',
+                    'createdAt'
                 ], 
                 include : {
                     model : Topic,
@@ -19,9 +21,16 @@ export class BlogController{
                     through : {attributes:[]
                     }
                 },
-                limit:10})
-
-            res.status(200).json(blogs);
+                limit:10}) as (BlogPost & {topics : Topic[]})[];
+                
+                const renderBlogs = blogs.map(blog =>{
+                    return {
+                        ...blog.toJSON(),
+                        createdAt : blog.createdAt.toDateString()
+                    }
+                })
+                
+                res.status(200).render('bloghomepage', {blogs: renderBlogs});
         }catch(err){
             console.log(err)
             res.status(500).send("Server Erorr!")

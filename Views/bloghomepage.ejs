@@ -5,7 +5,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
+<style>
+        body{
+            background-color: darkslategrey;
+        }
+        .background-fill-anim{
+            background-color: #80808040;
+            opacity: 0.8;
+            background: radial-gradient(circle, transparent 20%, darkslategrey 20%,darkslategrey 80%, transparent 80%, transparent), radial-gradient(circle, transparent 20%, darkslategrey 20%, darkslategrey 80%, transparent 80%, transparent) 25px 25px, linear-gradient(#80808040 2px, transparent 2px) 0 -1px, linear-gradient(90deg, #80808020 2px, darkslategrey 2px) -1px 0;
+            background-size: 50px 50px, 50px 50px, 25px 25px, 25px 25px;
+        }
+
+        hr{
+            max-width: 20lvw;
+            margin-left: 0%;
+        }
+        .blogs{
+            font-family: 'Courier New', Courier, monospace;
+            color: white;
+            margin-left: 20lvw;
+            max-width: 70lvw;
+        }
+        .blogs a{
+            stroke-width: 0.5lvw;
+            font-size: 3lvh ;
+            color: white;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+        .blogs a:hover{
+            stroke-width: 0.5lvw;
+            font-size: 3.1lvh ;
+            color: white;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+        .blog{
+            margin-bottom: 1.5lvh;
+            margin-top: 1.5lvh;
+            padding-top: 1.5lvh;
+            padding-top: 1.5lvh;
+        }
+        .Date{
+
+            padding-top: 0%;
+            margin-top: 0%;
+            color: lightslategrey;
+        }
+        .topics{
+            font-family:'Courier New', Courier, monospace;
+            color: white;
+        }
+</style>
+<body >
+    <%- include('partials/navbar') %>
+    <div class="blogs">
+        
+        <% blogs.forEach(blog => { %>
+            <div class="blog">
+                <a href="/<%-blog.blog_id%>"><%- blog.blogTitle%></a>
+                <p class="Date"><%= blog.createdAt%></p>
+                <div class="topics">
+                    <% blog.topics.forEach(topic => { %>
+                        #<%- topic.topic%>
+                    <% }) %> 
+                </div>
+            </div>
+        <% }) %>
+
+    </div>
     
 </body>
 </html>

@@ -1,0 +1,45 @@
+<style>
+    nav{
+       
+        margin: 0;
+        padding: 1lvh; 
+        margin-bottom: 0.5lvh;
+        font-family: 'Courier New', Courier, monospace;
+    }
+    .background{
+        background-color: #223636be;
+        opacity: 1;
+        background-image:  linear-gradient(135deg, #2F4F4F 25%, transparent 25%), linear-gradient(225deg, #2F4F4F 25%, transparent 25%), linear-gradient(45deg, #2F4F4F 25%, transparent 25%), linear-gradient(315deg, #2F4F4F 25%, #2F4F4F00 25%);
+        background-position:  10px 0, 10px 0, 0 0, 0 0;
+        background-size: 20px 20px;
+        background-repeat: repeat;
+    }
+    .navText{
+        color: white;
+        text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+        font-weight: 900;
+        opacity: 1;
+        font-size: 1.5rem; text-decoration: none; 
+    }
+    .nav-content{
+        opacity: 1; 
+        max-width: 1200px; 
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+</style>
+
+
+<nav  class="background">
+    <div class="nav-content">
+        <a href="/" class="navText">My Portfolio</a>
+        <ul style="opacity: 1; list-style: none; display: flex; gap: 1.5rem; margin: 0; padding: 0;">
+            <li><a href="/" style="text-decoration: none; color: #ffffff;">Home</a></li>
+            <li><a href="/projects" style="text-decoration: none; color: #ffffff;">Projects</a></li>
+            <li><a href="/about" style="text-decoration: none; color: #ffffff;">About</a></li>
+            <li><a href="/contact" style="text-decoration: none; color: #ffffff;">Contact</a></li>
+        </ul>
+    </div>
+</nav>

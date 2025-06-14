@@ -45,9 +45,16 @@
         a:hover {
             background-color: #555;
         }
+        .vl {
+            border-left: 5px solid darkslategrey;
+            height: 500px;
+            margin-right: 1lvw;
+            margin-left: 1lvw;
+        }
     </style>
 </head>
 <body>
+     
     <div class="container">
         <h1>404</h1>
         <h2>Oops! Page Not Found</h2>
@@ -55,5 +62,9 @@
         <p>Please check the URL or return to the homepage.</p>
         <a href="/">Go to Homepage</a>
     </div>
+    
+    <div class="vl"></div>
+
+    <%- include('partials/navbar') %>
 </body>
 </html>
