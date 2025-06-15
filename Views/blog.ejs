@@ -8,14 +8,24 @@
 <style>
     body{
         background-color: darkslategrey;
+        overflow: auto ;
+
+          
+        background-image:  linear-gradient(#22222230 2px, transparent 2px), linear-gradient(90deg, #22222230 2px, transparent 2px), linear-gradient(#22222230 1px, transparent 1px), linear-gradient(90deg, #22222230 1px, darkslategrey 1px);
+        background-size: 50px 50px, 50px 50px, 10px 10px, 10px 10px;
+        background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
+        overflow: auto ;
     }
     hr{
         max-width: 20lvw;
         margin-left: 0%;
     }
     .root{
+        position: fixed;
         margin-left: 20lvw;
         max-width: 70lvw;
+        margin-top: 2lvh;
+        
     }
     .blog-title{
         font-family: 'Courier New', Courier, monospace;
@@ -41,6 +51,25 @@
         font-family: 'Courier New', Courier, monospace;
         stroke-width: 0.25lvw;
         color: white;
+    }
+    @media screen and (max-width: 700px) {
+        .root{
+            margin-top: 7.5lvh;
+            margin-left: 10lvw;
+            max-width: 80lvw;
+        }
+        .blog-title{
+            font-size: 3lvh ;
+            size: 1lvh;
+        }
+        .topics{
+            font-size: 1.65lvh ;
+            size: 1lvh;
+        }
+        .blog-content{
+            font-size: 1.75lvh ;
+            size: 1lvh;
+        }
     }
 
 </style>

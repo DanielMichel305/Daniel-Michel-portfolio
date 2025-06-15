@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flappy Coder</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #0a0a0a;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .game-container {
+            text-align: center;
+        }
+        
+        #gameCanvas {
+            background: #111;
+            border: 2px solid #00ff00;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            line-height: 16px;
+            white-space: pre;
+            overflow: hidden;
+        }
+        
+        .controls {
+            margin-top: 20px;
+            color: #00ff00;
+        }
+        
+        .score {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #00ff41;
+        }
+        
+        .game-over {
+            color: #ff4444;
+            font-size: 20px;
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
+        }
+        
+        button {
+            background: #003300;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            padding: 10px 20px;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+            margin: 5px;
+        }
+        
+        button:hover {
+            background: #004400;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>🚀 FLAPPY CODER 🚀</h1>
+        <div class="score">Score: <span id="score">0</span> | High: <span id="highScore">0</span></div>
+        <canvas id="gameCanvas" width="1000" height="500"></canvas>
+        <div class="controls">
+            <div>Press SPACEBAR or CLICK to make the coder fly!</div>
+            <div>Avoid the bugs and syntax errors!</div>
+            <button onclick="startGame()">Start Game</button>
+            <button onclick="togglePause()">Pause/Resume</button>
+        </div>
+        <div id="gameOverMessage" class="game-over" style="display: none;">
+            RUNTIME ERROR! Game Over!<br>
+            Press START to debug and try again!
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Game state
+        let gameRunning = false;
+        let gamePaused = false;
+        let score = 0;
+        let highScore = parseInt(localStorage.getItem('flappyCoderHighScore') || '0');
+        document.getElementById('highScore').textContent = highScore;
+        
+        // Game objects
+        const coder = {
+            x: 100,
+            y: 200,
+            velocity: 0,
+            gravity: 0.5,
+            jumpStrength: -8,
+            sprite: [
+                '  ◉◉  ',
+                ' {^^} ',
+                '  ||  ',
+                ' /  \\ '
+            ]
+        };
+        
+        let obstacles = [];
+        let particles = [];
+        
+        const obstacleTypes = [
+            {
+                name: 'BUG',
+                top: [
+                    '██████████',
+                    '█        █',
+                    '█  BUG   █',
+                    '█ ERROR  █',
+                    '█  ><    █',
+                    '██████████'
+                ],
+                bottom: [
+                    '██████████',
+                    '█        █',
+                    '█ SYNTAX █',
+                    '█ ERROR  █',
+                    '█   !!   █',
+                    '██████████'
+                ]
+            },
+            {
+                name: 'MEMORY',
+                top: [
+                    '╔════════╗',
+                    '║        ║',
+                    '║ MEMORY ║',
+                    '║  LEAK  ║',
+                    '║   💧   ║',
+                    '╚════════╝'
+                ],
+                bottom: [
+                    '╔════════╗',
+                    '║        ║',
+                    '║ STACK  ║',
+                    '║OVERFLOW║',
+                    '║   📚   ║',
+                    '╚════════╝'
+                ]
+            },
+            {
+                name: 'NULL',
+                top: [
+                    '┌────────┐',
+                    '|        |',
+                    '│  NULL  │',
+                    '│POINTER │',
+                    '│   ∅    │',
+                    '└────────┘'
+                ],
+                bottom: [
+                    '┌────────┐',
+                    '|        |',
+                    '│SEGFAULT│',
+                    '│  CORE  │',
+                    '│ DUMPED │',
+                    '└────────┘'
+                ]
+            }
+        ];
+        
+        // Background code rain effect
+        const codeChars = ['0', '1', '{', '}', '(', ')', ';', '=', '+', '-', '*', '/', '<', '>', '!', '?'];
+        let backgroundCode = [];
+        
+        function initBackgroundCode() {
+            backgroundCode = [];
+            for (let i = 0; i < 50; i++) {
+                backgroundCode.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    char: codeChars[Math.floor(Math.random() * codeChars.length)],
+                    speed: Math.random() * 2 + 1,
+                    opacity: Math.random() * 0.3 + 0.1
+                });
+            }
+        }
+        
+        function updateBackgroundCode() {
+            backgroundCode.forEach(code => {
+                code.x -= code.speed;
+                if (code.x < -10) {
+                    code.x = canvas.width + 10;
+                    code.y = Math.random() * canvas.height;
+                }
+            });
+        }
+        
+        function drawBackgroundCode() {
+            ctx.font = '18px Courier New';
+            backgroundCode.forEach(code => {
+                const alpha = Math.sin(Date.now() * 0.001 + code.x * 0.01) * 0.1 + code.opacity;
+                ctx.fillStyle = `rgba(0, 255, 0, ${alpha})`;
+                ctx.fillText(code.char, code.x, code.y);
+            });
+        }
+        
+        function drawText(text, x, y, fontSize = 16) {
+            const lines = Array.isArray(text) ? text : [text];
+            ctx.font = `${fontSize}px Courier New`;
+            ctx.fillStyle = '#00ff00';
+            
+            lines.forEach((line, i) => {
+                ctx.fillText(line, x, y + (i * fontSize));
+            });
+        }
+        
+        function drawCoder() {
+            drawText(coder.sprite, coder.x, coder.y, 16);
+        }
+        
+        function createObstacle() {
+            const type = obstacleTypes[Math.floor(Math.random() * obstacleTypes.length)];
+            const gap = 160; // Increased gap size
+            const minHeight = 50;
+            const maxHeight = canvas.height - gap - minHeight;
+            const topHeight = Math.random() * (maxHeight - minHeight) + minHeight;
+            
+            obstacles.push({
+                x: canvas.width,
+                topHeight: topHeight,
+                bottomY: topHeight + gap,
+                bottomHeight: canvas.height - (topHeight + gap),
+                width: 80,
+                passed: false,
+                type: type
+            });
+        }
+        
+        function drawObstacles() {
+            obstacles.forEach(obstacle => {
+                // Draw top obstacle
+                for (let i = 0; i < obstacle.type.top.length; i++) {
+                    drawText(obstacle.type.top[i], obstacle.x, obstacle.topHeight - (obstacle.type.top.length - i) * 16, 14);
+                }
+                
+                // Fill the rest of the top with pattern
+                for (let y = 0; y < obstacle.topHeight - (obstacle.type.top.length * 16); y += 16) {
+                    drawText('█'.repeat(10), obstacle.x, y + 16, 14);
+                }
+                
+                // Draw bottom obstacle
+                for (let i = 0; i < obstacle.type.bottom.length; i++) {
+                    drawText(obstacle.type.bottom[i], obstacle.x, obstacle.bottomY + (i * 16), 14);
+                }
+                
+                // Fill the rest of the bottom with pattern
+                for (let y = obstacle.bottomY + (obstacle.type.bottom.length * 16); y < canvas.height; y += 16) {
+                    drawText('█'.repeat(10), obstacle.x, y, 14);
+                }
+            });
+        }
+        
+        function updateObstacles() {
+            obstacles.forEach(obstacle => {
+                obstacle.x -= 3;
+                
+                // Check if passed for scoring
+                if (!obstacle.passed && obstacle.x + obstacle.width < coder.x) {
+                    obstacle.passed = true;
+                    score++;
+                    document.getElementById('score').textContent = score;
+                    
+                    // Create success particles
+                    createParticles(coder.x, coder.y, ['++', 'OK', '✓']);
+                }
+            });
+            
+            // Remove off-screen obstacles
+            obstacles = obstacles.filter(obstacle => obstacle.x > -obstacle.width);
+            
+            // Create new obstacles
+            if (obstacles.length === 0 || obstacles[obstacles.length - 1].x < canvas.width - 350) {
+                createObstacle();
+            }
+        }
+        
+        function createParticles(x, y, chars) {
+            for (let i = 0; i < 5; i++) {
+                particles.push({
+                    x: x + Math.random() * 20 - 10,
+                    y: y + Math.random() * 20 - 10,
+                    vx: Math.random() * 4 - 2,
+                    vy: Math.random() * 4 - 2,
+                    char: chars[Math.floor(Math.random() * chars.length)],
+                    life: 60,
+                    maxLife: 60
+                });
+            }
+        }
+        
+        function updateParticles() {
+            particles.forEach(particle => {
+                particle.x += particle.vx;
+                particle.y += particle.vy;
+                particle.life--;
+            });
+            
+            particles = particles.filter(particle => particle.life > 0);
+        }
+        
+        function drawParticles() {
+            particles.forEach(particle => {
+                const alpha = particle.life / particle.maxLife;
+                ctx.fillStyle = `rgba(0, 255, 65, ${alpha})`;
+                ctx.font = '14px Courier New';
+                ctx.fillText(particle.char, particle.x, particle.y);
+            });
+        }
+        
+        function checkCollision() {
+            const coderBox = {
+                x: coder.x,
+                y: coder.y,
+                width: 40,
+                height: 64
+            };
+            
+            // Check ground and ceiling
+            if (coder.y <= 0 || coder.y >= canvas.height - 64) {
+                return true;
+            }
+            
+            // Check obstacles
+            for (let obstacle of obstacles) {
+                if (coderBox.x < obstacle.x + obstacle.width &&
+                    coderBox.x + coderBox.width > obstacle.x) {
+                    
+                    if (coderBox.y < obstacle.topHeight ||
+                        coderBox.y + coderBox.height > obstacle.bottomY) {
+                        return true;
+                    }
+                }
+            }
+            
+            return false;
+        }
+        
+        function gameOver() {
+            gameRunning = false;
+            document.getElementById('gameOverMessage').style.display = 'block';
+            
+            if (score > highScore) {
+                highScore = score;
+                localStorage.setItem('flappyCoderHighScore', highScore.toString());
+                document.getElementById('highScore').textContent = highScore;
+            }
+            
+            // Create crash particles
+            createParticles(coder.x, coder.y, ['ERROR', 'CRASH', 'DEBUG', '💥']);
+        }
+        
+        function jump() {
+            if (gameRunning && !gamePaused) {
+                coder.velocity = coder.jumpStrength;
+            }
+        }
+        
+        function startGame() {
+            gameRunning = true;
+            gamePaused = false;
+            score = 0;
+            document.getElementById('score').textContent = score;
+            document.getElementById('gameOverMessage').style.display = 'none';
+            
+            // Reset game objects
+            coder.y = 200;
+            coder.velocity = 0;
+            obstacles = [];
+            particles = [];
+            
+            initBackgroundCode();
+            gameLoop();
+        }
+        
+        function togglePause() {
+            if (gameRunning) {
+                gamePaused = !gamePaused;
+            }
+        }
+        
+        function gameLoop() {
+            if (!gameRunning) return;
+            
+            if (!gamePaused) {
+                // Clear canvas
+                ctx.fillStyle = '#001100';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Update background
+                updateBackgroundCode();
+                drawBackgroundCode();
+                
+                // Update coder physics
+                coder.velocity += coder.gravity;
+                coder.y += coder.velocity;
+                
+                // Update game objects
+                updateObstacles();
+                updateParticles();
+                
+                // Check collision
+                if (checkCollision()) {
+                    gameOver();
+                    return;
+                }
+                
+                // Draw everything
+                drawCoder();
+                drawObstacles();
+                drawParticles();
+                
+                // Draw debug info
+                ctx.fillStyle = '#004400';
+                ctx.font = '10px Courier New';
+                ctx.fillText(`FPS: ${Math.round(1000/16)} | Obstacles: ${obstacles.length}`, 10, canvas.height - 10);
+            } else {
+                // Draw pause overlay
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#00ff00';
+                ctx.font = '24px Courier New';
+                ctx.fillText('PAUSED', canvas.width/2 - 60, canvas.height/2);
+                ctx.font = '12px Courier New';
+                ctx.fillText('Press SPACEBAR to resume', canvas.width/2 - 100, canvas.height/2 + 30);
+            }
+            
+            requestAnimationFrame(gameLoop);
+        }
+        
+        // Event listeners
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                if (gamePaused) {
+                    togglePause();
+                } else {
+                    jump();
+                }
+            }
+        });
+        
+        canvas.addEventListener('click', jump);
+        
+        // Initialize
+        initBackgroundCode();
+        
+        // Draw initial screen
+        ctx.fillStyle = '#001100';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        drawBackgroundCode();
+        
+        ctx.fillStyle = '#00ff00';
+        ctx.font = '20px Courier New';
+        ctx.fillText('FLAPPY CODER', canvas.width/2 - 100, canvas.height/2 - 40);
+        ctx.font = '12px Courier New';
+        ctx.fillText('Help the coder navigate through programming bugs!', canvas.width/2 - 150, canvas.height/2);
+        ctx.fillText('Click START GAME to begin your coding adventure!', canvas.width/2 - 160, canvas.height/2 + 40);
+    </script>
+</body>
+</html>

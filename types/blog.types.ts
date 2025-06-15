@@ -2,6 +2,7 @@ export interface CreateBlogRequestSchema {
     blog_data : {
         blog_id : string;
         blogTitle: string;
+        blog_description : string 
         markdown_source : string;
     }
     topics : string[]

@@ -13,6 +13,7 @@ export class BlogController{
                 attributes: [
                     'blog_id',
                     'blogTitle',
+                    'blogDescription',
                     'createdAt'
                 ], 
                 include : {
@@ -45,6 +46,7 @@ export class BlogController{
             const blog_post = await BlogPost.create({
             blog_id:blog_data.blog_data.blog_id, 
             blogTitle : blog_data.blog_data.blogTitle,
+            blogDescription : blog_data.blog_data.blog_description || "",  ///I Don't think the || "" is needed
             markdown_source : blog_data.blog_data.markdown_source
             })
 
@@ -102,6 +104,10 @@ export class BlogController{
             });
         }
         
+    }
+    static getMiniGame(req: Request, res: Response){
+
+        res.status(200).render('minigame');
     }
 }
 

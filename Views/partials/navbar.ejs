@@ -1,45 +1,208 @@
 <style>
-    nav{
-       
+    nav {
         margin: 0;
-        padding: 1lvh; 
+        padding: 1lvh;
         margin-bottom: 0.5lvh;
         font-family: 'Courier New', Courier, monospace;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1001;
     }
-    .background{
+
+    .nav-buttons-container {
+        opacity: 1; 
+        list-style: none; 
+        display: flex; 
+        gap: 1.5rem; 
+        margin: 0; 
+        padding: 0;
+    }
+
+    .nav-buttons {
+        text-decoration: none; 
+        color: #ffffff;
+        transition: color 0.3s ease;
+    }
+
+    .nav-buttons:hover {
+        color: #cccccc;
+    }
+
+    .background {
         background-color: #223636be;
         opacity: 1;
-        background-image:  linear-gradient(135deg, #2F4F4F 25%, transparent 25%), linear-gradient(225deg, #2F4F4F 25%, transparent 25%), linear-gradient(45deg, #2F4F4F 25%, transparent 25%), linear-gradient(315deg, #2F4F4F 25%, #2F4F4F00 25%);
-        background-position:  10px 0, 10px 0, 0 0, 0 0;
+        background-image: linear-gradient(135deg, #2F4F4F 25%, transparent 25%), 
+                         linear-gradient(225deg, #2F4F4F 25%, transparent 25%), 
+                         linear-gradient(45deg, #2F4F4F 25%, transparent 25%), 
+                         linear-gradient(315deg, #2F4F4F 25%, #2F4F4F00 25%);
+        background-position: 10px 0, 10px 0, 0 0, 0 0;
         background-size: 20px 20px;
         background-repeat: repeat;
     }
-    .navText{
+
+    .navText {
         color: white;
         text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
         font-weight: 900;
         opacity: 1;
-        font-size: 1.5rem; text-decoration: none; 
+        font-size: 1.5rem; 
+        text-decoration: none;
     }
-    .nav-content{
-        opacity: 1; 
-        max-width: 1200px; 
+
+    .nav-content {
+        opacity: 1;
+        max-width: 1200px;
         margin: 0 auto;
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
+
+    .github-button {
+        color: #ffffff;
+        text-decoration: none;
+    }
+
+    /* Hamburger Menu Styles */
+    .hamburger {
+        display: none;
+        flex-direction: column;
+        cursor: pointer;
+        padding: 5px;
+        position: relative;
+        z-index: 1002;
+    }
+
+    .hamburger span {
+        width: 25px;
+        height: 3px;
+        background-color: white;
+        margin: 3px 0;
+        transition: 0.3s;
+        border-radius: 2px;
+        display: block;
+    }
+
+    /* Hamburger Animation */
+    .hamburger.active span:nth-child(1) {
+        transform: rotate(-45deg) translate(-5px, 6px);
+    }
+
+    .hamburger.active span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+        transform: rotate(45deg) translate(-5px, -6px);
+    }
+
+    /* Mobile Styles */
+    @media screen and (max-width: 768px) {
+        .hamburger {
+            display: flex;
+            margin-right: 2lvw ;
+        }
+
+        .nav-buttons-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(34, 54, 54, 0.98);
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+        }
+
+        .nav-buttons-container.active {
+            transform: translateX(0);
+        }
+
+        .nav-buttons-container li {
+            width: 100%;
+            text-align: center;
+        }
+
+        .nav-buttons {
+            display: block;
+            padding: 1rem;
+            font-size: 1.2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .github-button {
+            margin-top: 1rem;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+        }
+
+        .navText {
+            font-size: 1.2rem;
+        }
+    }
 </style>
 
-
-<nav  class="background">
+<nav class="background">
     <div class="nav-content">
-        <a href="/" class="navText">My Portfolio</a>
-        <ul style="opacity: 1; list-style: none; display: flex; gap: 1.5rem; margin: 0; padding: 0;">
-            <li><a href="/" style="text-decoration: none; color: #ffffff;">Home</a></li>
-            <li><a href="/projects" style="text-decoration: none; color: #ffffff;">Projects</a></li>
-            <li><a href="/about" style="text-decoration: none; color: #ffffff;">About</a></li>
-            <li><a href="/contact" style="text-decoration: none; color: #ffffff;">Contact</a></li>
+        <a href="/" class="navText">Daniel Michel</a>
+        
+        <!-- Hamburger Menu Button -->
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <ul class="nav-buttons-container" id="nav-menu">
+            <li><a href="/" class="nav-buttons">Home</a></li>
+            <li><a href="/projects" class="nav-buttons">Projects</a></li>
+            <li><a href="/about" class="nav-buttons">About</a></li>
+            <li><a href="/contact" class="nav-buttons">Contact</a></li>
+            <li>
+                <a class="github-button nav-buttons" href="https://github.com/DanielMichel305" data-color-scheme="no-preference: dark; light: light; dark: dark;" aria-label="Follow @DanielMichel305 on GitHub">Follow @DanielMichel305</a>
+            </li>
         </ul>
     </div>
 </nav>
+
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<script>
+    // Only run if elements exist (prevents errors on pages without navbar)
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.getElementById('nav-menu');
+
+    if (hamburger && navMenu) {
+        hamburger.addEventListener('click', function() {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Close menu when clicking on a nav link
+        const navLinks = document.querySelectorAll('.nav-buttons');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const isClickInsideNav = navMenu.contains(event.target);
+            const isClickOnHamburger = hamburger.contains(event.target);
+            
+            if (!isClickInsideNav && !isClickOnHamburger && navMenu.classList.contains('active')) {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+            }
+        });
+    }
+</script>

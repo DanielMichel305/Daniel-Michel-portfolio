@@ -5,6 +5,7 @@ import { Topic } from './topics';
 export class BlogPost extends Model<InferAttributes<BlogPost>, InferCreationAttributes<BlogPost>>{
     declare blog_id : string;
     declare blogTitle: string;
+    declare blogDescription : string 
     declare markdown_source : string;
 
     declare createdAt: CreationOptional<Date>;
@@ -22,6 +23,11 @@ BlogPost.init({
     blogTitle : {
         type: DataTypes.STRING,
         allowNull: false,
+    },
+    blogDescription : {
+        type : DataTypes.STRING,
+        allowNull : true
+
     },
     markdown_source : {
         type : DataTypes.STRING,

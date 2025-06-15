@@ -8,7 +8,15 @@
 <style>
         body{
             background-color: darkslategrey;
+            /* background-color: #e5e5f7; */
+           
+            
+            background-image:  linear-gradient(#22222230 2px, transparent 2px), linear-gradient(90deg, #22222230 2px, transparent 2px), linear-gradient(#22222230 1px, transparent 1px), linear-gradient(90deg, #22222230 1px, darkslategrey 1px);
+            background-size: 50px 50px, 50px 50px, 10px 10px, 10px 10px;
+            background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
+            overflow: auto ;
         }
+        
         .background-fill-anim{
             background-color: #80808040;
             opacity: 0.8;
@@ -24,18 +32,19 @@
             font-family: 'Courier New', Courier, monospace;
             color: white;
             margin-left: 20lvw;
-            max-width: 70lvw;
+            max-width: 65lvw;
+            margin-top: 3.5rem;
         }
         .blogs a{
             stroke-width: 0.5lvw;
-            font-size: 3lvh ;
+            font-size: 1.3rem ;
             color: white;
             text-decoration: none;
             transition: 0.2s;
         }
         .blogs a:hover{
             stroke-width: 0.5lvw;
-            font-size: 3.1lvh ;
+            font-size: 1.35rem ;
             color: white;
             text-decoration: none;
             transition: 0.2s;
@@ -56,6 +65,9 @@
             font-family:'Courier New', Courier, monospace;
             color: white;
         }
+        .description{
+            font-size: 0.9rem;
+        }
 </style>
 <body >
     <%- include('partials/navbar') %>
@@ -63,14 +75,16 @@
         
         <% blogs.forEach(blog => { %>
             <div class="blog">
-                <a href="/<%-blog.blog_id%>"><%- blog.blogTitle%></a>
+                <a href="/b/<%-blog.blog_id%>"><%- blog.blogTitle%></a>
                 <p class="Date"><%= blog.createdAt%></p>
                 <div class="topics">
                     <% blog.topics.forEach(topic => { %>
                         #<%- topic.topic%>
                     <% }) %> 
                 </div>
+                <p class="description"><%- blog.blogDescription%></p>
             </div>
+            <hr>
         <% }) %>
 
     </div>
