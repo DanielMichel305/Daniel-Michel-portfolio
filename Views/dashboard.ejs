@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+</head>
+<body>
+   
+    <div class="sidebar">
+        <button id="newBlogBtn">Write New Blog</button>
+        <button id="myBlogsBtn">My Blogs</button>
+        <button id="mediaBtn">Media Library</button>
+    </div>
+    <br>
+    <br>
+
+    <div id="root" style="border-style: double; padding: 1rem;">
+        <div id="createBlog" style="display: block;"> 
+            <%- include('partials/dashboard/createBlogPartial') %>
+        </div>
+         
+        <div id="blogList" style="display: none;">
+            <%- include('partials/dashboard/blogList') %>
+        </div>
+
+        <div></div>
+    </div>
+
+    <script src="https://unpkg.com/showdown/dist/showdown.min.js"></script>
+    <script>
+
+        const PartialTypes = Object.freeze({
+            CreateBlogPartial : 1,
+            BlogListPartial : 2,
+            MediaLibraryPartial : 3
+        })
+
+        document.getElementById("newBlogBtn").addEventListener('click',()=> ShowCorrectPartial(PartialTypes.CreateBlogPartial))
+        document.getElementById("myBlogsBtn").addEventListener('click', ()=> ShowCorrectPartial(PartialTypes.BlogListPartial))
+
+        function ShowCorrectPartial(partialType){
+            let partials = document.getElementById('root')
+            const childElements = partials.children
+
+             Array.from(childElements).forEach(child => {
+                child.style.display = 'none' 
+            });
+            switch (partialType) {
+                case PartialTypes.CreateBlogPartial:
+                    document.getElementById('createBlog').style.display = 'block'
+                    console.log(1)
+                    break;
+                case PartialTypes.BlogListPartial:
+                    document.getElementById('blogList').style.display = 'block'
+                    console.log(2)
+                    break 
+                default:
+                    console.log(3)
+                    break;
+            }
+        }
+    </script>
+    
+
+</body>
+</html>

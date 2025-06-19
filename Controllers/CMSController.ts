@@ -3,6 +3,7 @@ import {ExpressFileUpload } from "../types/blog.types";
 import sanitizer from 'sanitize-filename'
 import path from "path";
 import fs from 'fs'
+import { BlogPost } from "../Models/blogpost";
 
 
 
@@ -16,7 +17,8 @@ declare module 'express-serve-static-core' {
 
 export class CmsController{
     static async UploadMedia(req:Request, res:Response){
-    
+        
+       
         if (!req.files || !req.files.image) {
             res.status(400).json({ message: 'No files uploaded' });
             return;
@@ -46,5 +48,10 @@ export class CmsController{
 
 
 
+    }
+    static async GetDashboard(req: Request, res:Response){
+        const allBlogs = await BlogPost.findAll()
+        
+        res.render('dashboard', {blogs: allBlogs})
     }
 }

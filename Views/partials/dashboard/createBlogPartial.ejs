@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/showdown@2/dist/showdown.min.js"></script>
+
+</head>
+<style>
+    .row {
+  display: flex;
+}
+
+.column {
+  flex: 50%;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+h2, h3 {
+    color: #333;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap; /* Makes it responsive */
+    gap: 20px;
+}
+
+.column {
+    flex: 1;
+    min-width: 300px; /* Ensures it doesn't collapse on small screens */
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+input[type="text"], textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+#markdownPreview {
+    border: 1px solid #ccc;
+    padding: 10px;
+    background-color: #fafafa;
+    overflow-y: auto;
+}
+
+.markdown-preview {
+    white-space: pre-wrap; /* Preserves formatting */
+    word-wrap: break-word;
+    height: 30rem;
+}
+
+
+
+</style>
+<body>
+    <div>
+
+        <h2>Write New Blog</h2>
+
+        <div class="row">
+
+            <div class="column">
+
+                
+                <input type="text" id="blogId" placeholder="Blog Id" /> 
+        
+                <input type="text" id="blogTitle" placeholder="Blog Title" /><br><br>
+                <input type="text" id="blogTopics" placeholder="Topics (comma separated)" /><br><br>
+                <textarea id="blogDescription" style="width: 50rem;" placeholder="Blog Description"></textarea><br><br>
+        
+
+                <textarea id="markdownInput" style="width: 50rem; height: 30rem;" placeholder="Write Markdown here..."></textarea><br>
+
+            </div>
+
+            <div class="column">
+                <h3>Preview</h3>
+                <div id="markdownPreview" style="height: 30rem;" class="markdown-preview"></div><br>
+                <button onclick="saveBlog()">Save Blog</button>
+
+            </div>
+
+        </div>
+
+    
+
+        
+
+        <h3>Upload Image</h3>
+        <form action="/admin/cms/upload" method="post" enctype="multipart/form-data">
+            <input type="file" id="image" name="image" multiple><br><br>
+            <input type="submit" value="submit">
+        </form>
+        
+
+       
+
+</div>
+
+
+</body>
+<script>
+
+    const converter = new showdown.Converter();
+    document.getElementById('markdownInput').addEventListener('input', previewMarkdownContent)
+
+    function previewMarkdownContent(){
+        const htmlContent = converter.makeHtml(document.getElementById('markdownInput').value)
+        document.getElementById('markdownPreview').innerHTML = htmlContent
+    }
+
+
+    async function saveBlog(){
+        const topics = document.getElementById("blogTopics").value;
+        const topicsArray = topics.split(',')
+
+        const blogId = document.getElementById("blogId").value;
+        const blogTitle = document.getElementById("blogTitle").value;
+        const blogDescription = document.getElementById("blogDescription").value;
+        const blogContent = document.getElementById("markdownInput").value;
+
+        const blogData = {
+            'blog_data' : {
+                'blog_id' : blogId,
+                'blogTitle' : blogTitle,
+                'blog_description' : blogDescription,
+                'markdown_source' : blogContent,
+            },
+            'topics' : topicsArray
+        }
+
+        const res = await fetch('/create', {method : 'POST',
+        body : JSON.stringify(blogData),
+        headers :{
+            'Content-Type': 'application/json'
+            }
+        })
+        
+
+    }
+
+    
+    
+</script>
+</html>

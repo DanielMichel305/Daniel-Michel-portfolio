@@ -15,6 +15,6 @@ export const CmsRouter = Router();
 */
 
 
-CmsRouter.get('/', (req: Request, res: Response)=>{res.send("LALAL")})
+CmsRouter.get('/', CmsController.GetDashboard)
 CmsRouter.post('/upload', CmsController.UploadMedia)
 
