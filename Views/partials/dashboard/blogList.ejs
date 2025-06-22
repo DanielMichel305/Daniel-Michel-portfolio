@@ -4,7 +4,7 @@
     <% blogs.forEach(blog => { %>
         
         <hr>
-        <h3><%= blog.blogTitle %></h3>
+        <a href='/admin/cms/edit/<%= blog.blog_id %>'> <h3><%= blog.blogTitle %></h3></a>
         <h5><%= blog.blog_id %></h5> <h6><%= blog.createdAt %></h6>
         <p><%= blog.blogDescription %></p>
         <hr>

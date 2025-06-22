@@ -4,6 +4,7 @@ import sanitizer from 'sanitize-filename'
 import path from "path";
 import fs from 'fs'
 import { BlogPost } from "../Models/blogpost";
+import { Topic } from "../Models/topics";
 
 
 
@@ -53,5 +54,96 @@ export class CmsController{
         const allBlogs = await BlogPost.findAll()
         
         res.render('dashboard', {blogs: allBlogs})
+    }
+
+    static async editBlogPage(req:Request, res: Response){
+
+        const {blog_id} = req.params;
+
+        if(!blog_id){
+            res.status(404).end()
+        }
+        try {
+             const blog = await BlogPost.findOne({where : 
+            {
+                blog_id : blog_id
+            },
+            include : {
+                model : Topic,
+                attributes : ['topic'],
+                through : {
+                        attributes:[]
+                    }
+            }}) as (BlogPost & {topics : Topic[]});
+
+            if(!blog){
+                res.status(404).end()
+            }
+            else{
+                res.status(200).render('editblog', {blog : blog})
+            }
+
+            
+        } catch (error) {
+            console.log(`[ERORR] ${error}`)
+            res.status(500).end()
+        }
+
+       
+    }
+
+    static async modifyBlogContent(req: Request, res: Response){
+        const {blog_id} = req.params;
+
+         if(!blog_id){
+            res.status(404).end()
+            return;
+        }
+
+
+        const allowedFieldsToBeChanged = ['blog_id', 'blogTitle', 'blog_description', 'markdown_source', 'topics']
+        let updatedFields = {}
+
+        for(const field in req.body){
+            if(allowedFieldsToBeChanged.includes(field)){
+                updatedFields[field] = req.body[field]
+            }
+            else{
+                res.status(400).end()
+                return;
+            }
+        }
+       
+        
+        try {
+            const blog = await BlogPost.findByPk(blog_id);
+            if(!blog){
+                res.status(404).end()
+                return;
+            }
+
+            await blog.update(updatedFields,
+            {
+                where : {
+                    blog_id : blog_id
+                }
+            })
+
+            if(updatedFields['topics'] && Array.isArray(updatedFields['topics'])){
+
+                const topics = updatedFields['topics'].map(topic => ({ topic }));
+
+                await Topic.bulkCreate(topics, {ignoreDuplicates : true})
+
+                await blog.setTopics(updatedFields['topics']);
+            }
+            res.status(200).end()
+            
+        } catch (error) {
+            console.log(`[ERORR] ${error}`)
+            res.status(500).end()
+        }
+       
+
     }
 }

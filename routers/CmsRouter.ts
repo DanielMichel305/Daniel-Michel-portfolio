@@ -16,5 +16,7 @@ export const CmsRouter = Router();
 
 
 CmsRouter.get('/', CmsController.GetDashboard)
+CmsRouter.get('/edit/:blog_id', CmsController.editBlogPage)
 CmsRouter.post('/upload', CmsController.UploadMedia)
+CmsRouter.patch('/edit/:blog_id', CmsController.modifyBlogContent)
 

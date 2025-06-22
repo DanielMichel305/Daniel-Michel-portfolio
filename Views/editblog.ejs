@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+     <script src="https://cdn.jsdelivr.net/npm/showdown@2/dist/showdown.min.js"></script>
+</head>
+
+<style>
+    .row {
+  display: flex;
+}
+
+.column {
+  flex: 50%;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+h2, h3 {
+    color: #333;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap; /* Makes it responsive */
+    gap: 20px;
+}
+
+.column {
+    flex: 1;
+    min-width: 300px; /* Ensures it doesn't collapse on small screens */
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+input[type="text"], textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+#markdownPreview {
+    border: 1px solid #ccc;
+    padding: 10px;
+    background-color: #fafafa;
+    overflow-y: auto;
+}
+
+.markdown-preview {
+    white-space: pre-wrap; /* Preserves formatting */
+    word-wrap: break-word;
+    height: 30rem;
+}
+</style>
+
+<body>
+    
+    
+
+
+    <div id="root" style="border-style: double; padding: 1rem;">
+        
+
+        <h2>Edit Blog <%- blog.blog_id %></h2>
+
+        <div class="row">
+
+            <div id="modifiableFields" class="column">
+
+                
+                <input type="text" name="blog_id" id="blogId" placeholder="Blog Id" value="<%= blog.blog_id %>" data-original="<%= blog.blog_id %>"/> 
+        
+                <input type="text" name="blogTitle" id="blogTitle" placeholder="Blog Title" value="<%- blog.blogTitle %>" data-original="<%- blog.blogTitle %>" /><br><br>
+                <input type="text" name="topics" id="blogTopics" placeholder="Topics (comma separated)"  data-original="<%= blog.topics.map(topic => topic.topic).join(', ') %>" value= "<%= blog.topics.map(topic => topic.topic).join(', ') %>" /><br><br>
+                
+                <textarea id="blogDescription" name="blog_description" style="width: 50rem;" placeholder="Blog Description" data-original="<%= blog.blogDescription %>"><%= blog.blogDescription %></textarea><br><br>
+        
+
+                <textarea id="markdownInput" name="markdown_source" style="width: 50rem; height: 30rem;" data-original="<%=blog.markdown_source%>"><%=blog.markdown_source%></textarea><br>
+
+
+                <h3>Upload Image</h3>
+                <form action="/admin/cms/upload" method="post" enctype="multipart/form-data">
+                    <input type="file" id="image" name="image" multiple><br><br>
+                    <input type="submit" value="submit">
+                </form>
+
+            </div>
+
+            <div class="column">
+                <h3>Preview</h3>
+                <div id="markdownPreview" style="height: 30rem;" class="markdown-preview"></div><br>
+                <button onclick="saveBlogModifications()">Save Blog</button>
+
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+
+
+      
+    const converter = new showdown.Converter();
+    document.getElementById('markdownInput').addEventListener('input', previewMarkdownContent)
+
+    function previewMarkdownContent(){
+        const htmlContent = converter.makeHtml(document.getElementById('markdownInput').value)
+        document.getElementById('markdownPreview').innerHTML = htmlContent
+    }
+
+    document.addEventListener('DOMContentLoaded', ()=>{
+        previewMarkdownContent()
+    })
+
+    function getModifiedFields(){
+        modifiableFieldInputs = document.getElementById('modifiableFields').children;
+        let modifiedFields = {};
+
+        
+
+
+
+        for (const inputField of modifiableFieldInputs) {
+            if(inputField.value !== inputField.dataset.original){
+                modifiedFields[inputField.name] = inputField.value;
+            }
+        }
+
+        return modifiedFields;
+    }
+
+    async function saveBlogModifications(){
+        modifiedFields = getModifiedFields()
+
+        if (Object.keys(modifiedFields).length === 0) {
+            alert('No changes detected!');
+            return;
+        }
+
+
+
+        const blogId = document.getElementById('blogId').dataset.original
+       
+        console.log(blogId)
+
+        if(modifiedFields['topics']){
+             modifiedFields['topics'] =  modifiedFields['topics'].split(',').map(t => t.trim());
+        }
+
+       
+       
+
+        
+        const res = await fetch(`/admin/cms/edit/${blogId}`, {method : 'PATCH', body : JSON.stringify(modifiedFields), headers : {'Content-Type': 'application/json'}});
+        
+        if(res.ok){
+            alert('Blog Updated!')
+        }
+        
+
+
+
+    }
+
+
+    </script>
+</body>
+</html>
