@@ -1,4 +1,4 @@
-import {Sequelize, Model, InferAttributes, InferCreationAttributes, DataTypes, CreationOptional} from '@sequelize/core'
+import {Sequelize, Model, InferAttributes, InferCreationAttributes, DataTypes, CreationOptional, BelongsToManyAddAssociationsMixin, BelongsToManySetAssociationsMixin, BelongsToManyGetAssociationsMixin} from '@sequelize/core'
 import {sequelize} from '../db/db'
 import { Topic } from './topics';
 
@@ -10,6 +10,12 @@ export class BlogPost extends Model<InferAttributes<BlogPost>, InferCreationAttr
 
     declare createdAt: CreationOptional<Date>;
     declare updatedAt: CreationOptional<Date>;
+
+
+    declare addTopics: BelongsToManyAddAssociationsMixin<Topic, string>;
+    declare setTopics: BelongsToManySetAssociationsMixin<Topic, string>;
+    declare getTopics: BelongsToManyGetAssociationsMixin<Topic>;
+
 
     public readonly Topics?: Topic[];
 

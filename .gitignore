@@ -4,3 +4,5 @@ node_modules
 *.sql
 db
 public/**/blogs/
+dist
+dist/*

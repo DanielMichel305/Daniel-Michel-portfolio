@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+    "target": "ES2021",                          
+    "module": "NodeNext",                        
+    "moduleResolution": "NodeNext",              
+    "outDir": "./dist",                          
+    "rootDir": "./src",                          
+    "strict": false,                              
+    "esModuleInterop": true,                     
+    "forceConsistentCasingInFileNames": true,    
+    "skipLibCheck": true,                        
+    "allowSyntheticDefaultImports": true,        
+    "noImplicitAny": false,                       
+    "noUnusedLocals": false,                      
+    "noUnusedParameters": false,                  
+    "declaration": true,                         
+    "resolveJsonModule": true,
+    "allowJs": true
+    },
+    "include": ["src/**/*.ts", "db"],
+    "exclude": ["node_modules", "dist"],
+    
+}
