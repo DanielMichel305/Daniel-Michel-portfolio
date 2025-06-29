@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    form{
+        border-style: solid;
+        background-color: cadetblue;
+        max-width: fit-content;
+        padding: 5%;
+        border-radius: 2%;
+        transform: translate(calc(50lvw - 60%),calc(50lvh - 70%));
+    }
+</style>
+<body>
+    
+    <form action="/admin/cms/login" method="post">
+        <input name="username" type="text" placeholder="username" required><br><br>
+        <input name="password" type="password" placeholder="passsword" required><br><br>
+        <input type="submit" value="login">
+    </form>
+
+</body>
+</html>

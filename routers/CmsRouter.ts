@@ -1,6 +1,7 @@
 import {Router, Request, Response} from 'express'
 import { CmsController } from '../Controllers/CMSController';
 import { NotFoundMiddleware } from '../Middleware/404';
+import { adminOnlyRouteMiddleware } from '../Middleware/adminOnlyRoute';
 
 export const CmsRouter = Router();
 
@@ -16,10 +17,14 @@ export const CmsRouter = Router();
 */
 
 
-CmsRouter.get('/', CmsController.GetDashboard)
-CmsRouter.get('/edit/:blog_id', CmsController.editBlogPage)
-CmsRouter.post('/upload', CmsController.UploadMedia)
-CmsRouter.patch('/edit/:blog_id', CmsController.modifyBlogContent)
-CmsRouter.delete('/:blog_id', CmsController.deleteBlogPost)
+CmsRouter.get('/', adminOnlyRouteMiddleware,CmsController.GetDashboard)
+CmsRouter.get('/edit/:blog_id',adminOnlyRouteMiddleware, CmsController.editBlogPage)
+CmsRouter.post('/upload',adminOnlyRouteMiddleware, CmsController.UploadMedia)
+CmsRouter.patch('/edit/:blog_id',adminOnlyRouteMiddleware, CmsController.modifyBlogContent)
+CmsRouter.delete('/:blog_id', adminOnlyRouteMiddleware,CmsController.deleteBlogPost)
+
+CmsRouter.get('/login', CmsController.getLoginPage)
+CmsRouter.post('/login', CmsController.loginUser)
+CmsRouter.get('/logout', CmsController.logoutUser)
 
 CmsRouter.use(NotFoundMiddleware);

@@ -17,6 +17,35 @@ declare module 'express-serve-static-core' {
 }
 
 export class CmsController{
+
+    static getLoginPage(req: Request, res: Response){
+        res.render('login')
+    }
+
+    static async loginUser(req: Request, res: Response){
+        const {username,password} = req.body;
+
+        if(!username || !password){
+            res.status(400).end('username and passowrd required')
+        }
+        if(username == process.env.CMS_USRNAME as string && password === process.env.CMS_PASS as string){
+            req.session.isLoggedIn = true;
+            res.status(200).redirect('/admin/cms')
+            
+        }
+        else{
+            req.session.isLoggedIn = false;
+            res.status(401).end('Username and password incorrect')
+        }
+        
+    }
+    static async logoutUser(req: Request, res: Response){
+        req.session.isLoggedIn = false;
+        req.session.destroy(()=>{
+            res.redirect('/')
+        });
+    }
+
     static async UploadMedia(req:Request, res:Response){
         
        
@@ -163,4 +192,6 @@ export class CmsController{
         }
 
     }
+
+
 }

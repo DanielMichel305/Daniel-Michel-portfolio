@@ -1,4 +1,5 @@
 import express, {Application, Request,Response} from 'express'
+import Session  from 'express-session';
 import { BlogController } from './Controllers/blogController';
 import { NotFoundMiddleware } from './Middleware/404';
 
@@ -8,6 +9,7 @@ import path from 'path'
 
 import './Models/blogPostTopics'
 import { CmsRouter } from './routers/CmsRouter';
+
 
 
 require('dotenv').config()
@@ -21,11 +23,22 @@ app.use(express.json())
 app.use(express.static(path.join(__dirname, './public')))
 
 
+app.use(Session({
+  secret: process.env.SESSION_KEY as string,
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false } 
+}));
+
+
 
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'Views'))
 
 app.use('/admin/cms', CmsRouter)
+
+
+
 
 
 app.get('/', BlogController.getAllBlogs)
@@ -37,8 +50,6 @@ app.post('/create', BlogController.createNewBlogPost)
 app.get('/about-me', (req: Request, res: Response)=>{
     res.render('about')
 })
-
-
 
 
 app.use(NotFoundMiddleware);
