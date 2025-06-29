@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"> 
+
+    <title>Document</title>
+</head>
+
+<style>
+
+    body{
+            background-color: darkslategrey;
+            /* background-color: #e5e5f7; */
+           
+            
+            background-image:  linear-gradient(#22222230 2px, transparent 2px), linear-gradient(90deg, #22222230 2px, transparent 2px), linear-gradient(#22222230 1px, transparent 1px), linear-gradient(90deg, #22222230 1px, darkslategrey 1px);
+            background-size: 50px 50px, 50px 50px, 10px 10px, 10px 10px;
+            background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
+            overflow: auto ;
+        }
+        
+        .background-fill-anim{
+            background-color: #80808040;
+            opacity: 0.8;
+            background: radial-gradient(circle, transparent 20%, darkslategrey 20%,darkslategrey 80%, transparent 80%, transparent), radial-gradient(circle, transparent 20%, darkslategrey 20%, darkslategrey 80%, transparent 80%, transparent) 25px 25px, linear-gradient(#80808040 2px, transparent 2px) 0 -1px, linear-gradient(90deg, #80808020 2px, darkslategrey 2px) -1px 0;
+            background-size: 50px 50px, 50px 50px, 25px 25px, 25px 25px;
+        }
+        .root{
+            position: fixed;
+            margin-left: 20lvw;
+            max-width: 65%;
+            margin-top: 3.5rem;
+
+            font-family: 'Courier New', Courier, monospace;
+            color: white;
+        
+        }
+        .miu-href{
+            color: white;
+            text-decoration: underline ;
+            text-decoration-color: red;
+        }
+        .link{
+           
+            text-decoration: none;
+            color: white;
+            transition: 0.2s;
+        }
+        .link:hover{
+            
+            font-size: calc(100% + 3px);
+            transition: 0.2s;
+        }
+
+        
+</style>
+<body>
+    
+    <%- include('partials/navbar') %>
+    
+    <div class="root">
+        <h1>Hi there, I am Daniel. I'm an AI Major at <a class="miu-href" target="_blank" href="https://www.miuegypt.edu.eg/">MIU</a> currently in my senior year with Passion for Software Engineering, AI, Tech and Aviation. I also enjoy plaing the drums, Gaming and playing squash.</h1>
+
+        <h3>Check out my <a class="link" href="/blog">blog</a>, I write about Intresting Stuff</h3>
+        
+        <h2>Or</h2>
+        
+        <h3>  take a look at my <a class="link" href="/assets/pdf/cv.pdf" download="Daniel Michel Sadek CV.pdf"> cv</a></h3>
+        (You can view it online if you don't want to download it. <a class="link" href="/assets/pdf/cv.pdf">check it out</a> ) 
+
+        <br><hr>
+        
+       <h2> Wanna Get in touch? check out my socials below</h2>
+
+       <div class="socials">
+            
+        <a style="background-color: black ; padding: 0.4rem; border-radius: 5px;" class="link" href="">Linked<span style="color: #0072b1;">In</span></a>
+        <a style="background-color: #1f1f1f ; padding: 0.4rem; border-radius: 5px; color: #7289da;" class="link" href="">Discord</a>
+
+
+        <a style="background-color: #5158d4; padding: 0.4rem; border-radius: 5px; text-decoration: none; color: white; font-family: sans-serif;" class="link" href="https://instagram.com/danioool_">
+             <span style=" color: indianred;">
+                <i class="fab fa-instagram"></i>
+            </span>
+        Follow on Instagram</a>
+       
+        <span style="font-size: x-large;">Or Shoot me an <a style="color: #FBBC05;" href="mailto:danielmichel.30504@gmail.com">email</a> </span>
+         
+
+        </div>
+
+        <br>
+        <hr>
+        Bored? check out this <a class="link" href="/minigame">minigame</a>
+
+    </div>
+
+</body>
+</html>

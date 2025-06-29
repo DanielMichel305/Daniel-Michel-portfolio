@@ -27,10 +27,16 @@ app.set('views', path.join(__dirname, 'Views'))
 
 app.use('/admin/cms', CmsRouter)
 
+
 app.get('/', BlogController.getAllBlogs)
 app.get('/minigame', BlogController.getMiniGame)
 app.get('/b/:blogId', BlogController.getBlogById)
 app.post('/create', BlogController.createNewBlogPost)
+
+
+app.get('/about-me', (req: Request, res: Response)=>{
+    res.render('about')
+})
 
 
 
