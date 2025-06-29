@@ -146,4 +146,21 @@ export class CmsController{
        
 
     }
+    static async deleteBlogPost(req: Request, res: Response){
+
+        const {blog_id} = req.params;
+        if(!blog_id){
+            res.status(400).end()
+        }
+
+        try {
+            await BlogPost.destroy({where : {blog_id : blog_id}})
+            res.status(200).end('Blog Deleted');
+
+
+        } catch (error) {
+            res.status(500).end('Server Error!')
+        }
+
+    }
 }

@@ -1,5 +1,6 @@
 import {Router, Request, Response} from 'express'
 import { CmsController } from '../Controllers/CMSController';
+import { NotFoundMiddleware } from '../Middleware/404';
 
 export const CmsRouter = Router();
 
@@ -19,4 +20,6 @@ CmsRouter.get('/', CmsController.GetDashboard)
 CmsRouter.get('/edit/:blog_id', CmsController.editBlogPage)
 CmsRouter.post('/upload', CmsController.UploadMedia)
 CmsRouter.patch('/edit/:blog_id', CmsController.modifyBlogContent)
+CmsRouter.delete('/:blog_id', CmsController.deleteBlogPost)
 
+CmsRouter.use(NotFoundMiddleware);
