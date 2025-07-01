@@ -1,4 +1,9 @@
 {
+  "scripts": {
+    "dev": "npx tsx ./src/app.ts",
+    "serve": "node ./dist/app.js",
+    "build": " npx tsc "
+  },  
   "dependencies": {
     "@sequelize/sqlite3": "^7.0.0-alpha.46",
     "@types/express": "^5.0.3",
@@ -17,6 +22,8 @@
     "typescript": "^5.8.3"
   },
   "devDependencies": {
-    "@types/express-session": "^1.18.2"
+    "@types/express-fileupload": "^1.5.1",
+    "@types/express-session": "^1.18.2",
+    "cpy-cli": "^5.0.0"
   }
 }
