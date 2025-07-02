@@ -56,7 +56,7 @@ export class CmsController{
 
         const images : ExpressFileUpload[] = Array.isArray(req.files.image) ? req.files.image : [req.files.image] 
 
-        const uploadPath = path.join(__dirname, '..', 'public', 'assets', 'blogs', 'images');
+        const uploadPath = path.join(__dirname, '..', '..' ,'public', 'assets', 'blogs', 'images');
         fs.mkdirSync(uploadPath, {recursive : true})
 
         const allowedMimetypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];

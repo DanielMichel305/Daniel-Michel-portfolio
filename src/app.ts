@@ -3,6 +3,8 @@ import Session  from 'express-session';
 import { BlogController } from './Controllers/blogController';
 import { NotFoundMiddleware } from './Middleware/404';
 
+import createMemoryStore from 'memorystore'
+
 import fileUpload from 'express-fileupload'
 import path from 'path'
 
@@ -23,11 +25,19 @@ app.use(express.json())
 app.use(express.static(path.join(__dirname, '../public')))
 
 
+const sessionMemoryStore = createMemoryStore(Session)
+
 app.use(Session({
   secret: process.env.SESSION_KEY as string,
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: false } 
+  store : new sessionMemoryStore({
+    checkPeriod : 2 * 1000 * 1000 * 1000
+  }),
+  cookie: { 
+    httpOnly: true,
+    secure: process.env.ENVIROMENT === "PROD"
+  } 
 }));
 
 
