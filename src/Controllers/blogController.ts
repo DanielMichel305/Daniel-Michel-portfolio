@@ -22,7 +22,7 @@ export class BlogController{
                     through : {attributes:[]
                     }
                 },
-                limit:10}) as (BlogPost & {topics : Topic[]})[];
+                limit:10,order : [['createdAt', 'DESC']]}) as (BlogPost & {topics : Topic[]})[];
                 
                 const renderBlogs = blogs.map(blog =>{
                     return {
