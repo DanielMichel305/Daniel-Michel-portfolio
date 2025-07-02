@@ -2,7 +2,8 @@
   "scripts": {
     "dev": "npx tsx ./src/app.ts",
     "serve": "node ./dist/app.js",
-    "build": " npx tsc "
+    "build": " npx tsc",
+    "build-prod" : "cp ./src/Views/ ./dist/Views/ && npx tsc"
   },
   "dependencies": {
     "@sequelize/sqlite3": "^7.0.0-alpha.46",
