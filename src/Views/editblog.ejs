@@ -277,7 +277,7 @@ button:hover {
         const res = await fetch(`/admin/cms/${blogId}`, {method: "DELETE"});
         if(res.ok){
             alert(`Blog \"${blogId}\" deleted!`);
-            window.location.href='http://localhost:8080/admin/cms/'
+            window.location.href='/admin/cms/'
             
         }
         else{
