@@ -2,6 +2,7 @@
   "scripts": {
     "dev": "npx tsx ./src/app.ts",
     "serve": "node ./dist/app.js",
+    "serve-prod" : "sudo systemctl restart DMSPortfolio.service && sudo systemctl status DMSPortfolio.service",
     "build": " npx tsc",
     "build-prod" : "cp ./src/Views/ ./dist/Views/ && npx tsc"
   },
