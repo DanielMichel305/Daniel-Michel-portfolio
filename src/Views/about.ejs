@@ -29,7 +29,7 @@
         }
         h1{
             letter-spacing: 0px;
-            text-align: justify;
+            
         }
         .background-fill-anim{
             background-color: #80808040;
@@ -48,6 +48,12 @@
             
 
             
+        }
+        .root .pfp{
+                margin: 5% 25px 20px 0;
+            }
+        .title{
+            text-align: justify;
         }
         .miu-href{
             color: white;
@@ -79,7 +85,7 @@
             opacity: 1;
             
         }
-         @media screen and (max-width: 700px) {
+         @media screen and (max-width: 768px) {
             .root{
                 margin-left: 10lvw;
                 max-width: 95%;
@@ -88,6 +94,9 @@
                 
                 text-align: left;
                 
+            }
+            .root .pfp{
+                margin: 5% 100% 20px 0;
             }
          }
 
@@ -98,12 +107,12 @@
     <%- include('partials/navbar') %>
     
     <div class="root">
-        <img style=" margin: 5% 100% 20px 0; float: left; border-radius: 50%;" src="/assets/images/my pic.webp" height="200px" width="200px" alt="Me">
-        <h1 style=" padding-top: 5%;">Hi there, I'm Daniel but my friends call me Daniool. I'm an AI Major at <a class="miu-href" target="_blank" href="https://www.miuegypt.edu.eg/">MIU</a> currently in my senior year with Passion for Software Engineering, AI, Tech and Aviation. I also enjoy plaing the <a class="img-hover-drums">Drums</a>, Gaming and playing squash.</h1>
+        <img class="pfp" style="float: left; border-radius: 50%;" src="/assets/images/my pic.webp" height="200px" width="200px" alt="Me">
+        <h1 class="title" style=" padding-top: 5%;">Hi there, I'm Daniel but my friends call me Daniool. I'm an AI Major at <a class="miu-href" target="_blank" href="https://www.miuegypt.edu.eg/">MIU</a> currently in my senior year with Passion for Software Engineering, AI, Tech and Aviation. I also enjoy plaing the <a class="img-hover-drums">Drums</a>, Gaming and playing squash.</h1>
 
         
 
-        <h3 style="margin-top: 10%;">Check out my <a class="link" href="/blog">blog</a>, I write about Intresting Stuff</h3>
+        <h3 style="margin-top: 5%;">Check out my <a class="link" href="/blog">BLOG</a>, I write about Intresting Stuff</h3>
         
         <h2>Or</h2>
         
@@ -112,7 +121,7 @@
 
         
         
-        <h1 style="margin-bottom: 1%; margin-top: 10%;">Wanna Learn more about me? Keep scrolling!</h1><h3 style=" margin-left: 1%; margin-top: 0%;"><a class="link" href="#contact-me">js wanna contact me?</a></h3>
+        <h1 style="margin-bottom: 1%; margin-top: 5%;">Wanna Learn more about me? Keep scrolling!</h1><h3 style=" margin-left: 1%; margin-top: 0%;"><a class="link" href="#contact-me">js wanna contact me?</a></h3>
 
         <br>
         <h2>Languages I use in My projects:</h2>
