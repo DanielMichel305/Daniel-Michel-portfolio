@@ -4,7 +4,7 @@
     "serve": "node ./dist/app.js",
     "serve-prod" : "sudo systemctl restart DMSPortfolio.service && sudo systemctl status DMSPortfolio.service",
     "build": " npx tsc",
-    "build-prod" : "cp -a ./src/Views/. ./dist/Views/ && npx tsc"
+    "build-prod" : "cp -a ./src/Views/. ./dist/Views/ && npm install && npx tsc"
   },
   "dependencies": {
     "@sequelize/sqlite3": "^7.0.0-alpha.46",
