@@ -80,7 +80,7 @@ export class CmsController{
 
     }
     static async GetDashboard(req: Request, res:Response){
-        const allBlogs = await BlogPost.findAll()
+        const allBlogs = await BlogPost.findAll({order : [['createdAt', 'DESC']]})
         
         res.render('dashboard', {blogs: allBlogs})
     }
