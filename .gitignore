@@ -2,7 +2,6 @@
 node_modules
 *.db
 *.sql
-db
 public/**/blogs/
 dist
 dist/*
