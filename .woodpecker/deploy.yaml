@@ -1,0 +1,23 @@
+when:
+  - event: push
+    branch: [main,master]
+
+steps:
+  - name: build
+    image: debian
+    commands:
+    - echo "[INFO] starting build proccess"
+    - npm ci
+    - npm run build
+  - name: redeploy
+    image: curlimages/curl
+    environment:
+      API_KEY:
+        from_secret: portainer_API_key
+      CTR_ID:
+        from_secret: ctr_id  
+    commands :
+    - echo "[INFO] starting redeploy proccess"
+    - "curl -X POST \"http://portainer.local:9000/api/endpoints/1/docker/containers/$CTR_ID/restart\" \ -H \"X-API-Key: $API_KEY\""
+
+  
