@@ -4,7 +4,7 @@ when:
 
 steps:
   - name: build
-    image: debian
+    image: node:20
     commands:
     - echo "[INFO] starting build proccess"
     - npm ci
