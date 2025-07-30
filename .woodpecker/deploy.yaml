@@ -18,6 +18,6 @@ steps:
         from_secret: ctr_id  
     commands :
     - echo "[INFO] starting redeploy proccess"
-    - "curl -X POST \"http://portainer.local:9000/api/endpoints/1/docker/containers/$CTR_ID/restart\" \ -H \"X-API-Key: $API_KEY\""
+    - "curl -X POST \"http://192.168.1.101:9443/api/endpoints/1/docker/containers/$CTR_ID/restart\" -H \"X-API-Key: $API_KEY\""
 
   
