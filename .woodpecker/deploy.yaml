@@ -37,7 +37,7 @@ steps:
         from_secret: ctr_id  
     commands :
       - echo "[INFO] starting redeploy process"
-      - "curl -k -X POST \"http://192.168.1.101:9443/api/endpoints/1/docker/containers/$CTR_ID/recreate\" -H \"X-API-Key: $API_KEY\""
+      - "curl -k -X POST \"https://danielmichel-lab.mywire.org:9443/api/endpoints/1/docker/containers/$CTR_ID/recreate\" -H \"X-API-Key: $API_KEY\""
     depends_on: 
       - build-image
 
