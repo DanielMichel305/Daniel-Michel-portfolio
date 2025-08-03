@@ -8,7 +8,7 @@ jobs:
       name: "Build node app"
       steps:
         - name: Install dependencies
-          run: npm ci
+          run: npm Install
         - name: Build app
 
           run: npm run build-prod
@@ -34,7 +34,7 @@ jobs:
         - name: Deploy stack to portainer
           uses: carlrygart/portainer-stack-deploy@v1
           with:
-            portainer-host: ${{ secrets.PORTAINER_HOST }}
+            portainer-host: https://danielmichel-lab.mywire.org
             username: daniool
             password: ${{ secrets.PTR_API_TOKEN }}
             stack-name: 'dms-portfolio-stack'
