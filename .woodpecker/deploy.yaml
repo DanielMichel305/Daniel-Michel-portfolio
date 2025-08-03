@@ -38,7 +38,7 @@ steps:
         from_secret: ctr_id  
     commands :
       - echo "[INFO] starting redeploy process"
-      - "curl -H \"X-API-Key: $API_KEY\" https://danielmichel-lab.mywire.org/api/stacks/8/redeploy?endpointId=1"
+      - "curl -H \"X-API-Key: $API_KEY\" http://danielmichel-lab.mywire.org/api/stacks/10/git/redeploy?endpointId=3"
     depends_on: 
       - build-image
 
