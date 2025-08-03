@@ -43,7 +43,7 @@ jobs:
           uses:  luminos-company/portami@v1.2
           with:
             endpoint: 'https://danielmichel-lab.mywire.org'
-            access_token: ${{PORTAINER_API}}
+            access_token: ${{secrets.PORTAINER_API}}
             stack_name: 'dms-portfolio-stack' # The unique name of the stack like: "cdn_minio"
             file_path: 'docker-compose.yaml' # The stack file path to use
             prune: false # Prune the stack
