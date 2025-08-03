@@ -50,3 +50,4 @@ jobs:
             stack-definition: 'docker-compose.yaml'
             image: docker.io/daniool/dms-portfolio:1.3
             pull-image: true
+            prune-stack: false
