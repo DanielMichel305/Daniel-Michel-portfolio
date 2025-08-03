@@ -46,5 +46,5 @@ jobs:
             access_token: ${{secrets.PORTAINER_API}}
             stack_name: 'dms-portfolio-stack' # The unique name of the stack like: "cdn_minio"
             file_path: 'docker-compose.yaml' # The stack file path to use
-            prune: false # Prune the stack
+            prune: true # Prune the stack
             pull: true # Pull the images

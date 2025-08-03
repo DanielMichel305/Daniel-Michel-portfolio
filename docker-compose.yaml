@@ -11,6 +11,8 @@ services:
     volumes:
       - dms-portfolio-assets:/app/public 
       - dms-portfolio-dbdata:/app/dist/db
+    env_file:
+      - stack.env
 
 networks:
   npm-network:
