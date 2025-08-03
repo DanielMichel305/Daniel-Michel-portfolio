@@ -1,47 +1,47 @@
-# Currently moved to Github actions for CD until implementing woodpecker push to portainer plugin 
-when:
-  - event: [push, manual]
-    branch: [main,master]
+# # Currently moved to Github actions for CD until implementing woodpecker push to portainer plugin 
+# when:
+#   - event: [push, manual]
+#     branch: [main,master]
 
-steps:
-  - name: build-app
-    image: node:20
-    commands:
-      - echo "[INFO] starting build process"
-      - npm ci
-      - npm run build
+# steps:
+#   - name: build-app
+#     image: node:20
+#     commands:
+#       - echo "[INFO] starting build process"
+#       - npm ci
+#       - npm run build
     
-  - name: build-image
-    image: woodpeckerci/plugin-docker-buildx
-    pull: false
-    settings:
-      repo: daniool/dms-portfolio
-      registry: docker.io
-      username: 
-        from_secret: docker_usr
-      password:
-        from_secret: docker_pswd
-      tags:
-        - "1.3"
-      platforms:
-        - linux/amd64
-      dockerfile: dockerfile
-    depends_on: 
-      - build-app
+#   - name: build-image
+#     image: woodpeckerci/plugin-docker-buildx
+#     pull: false
+#     settings:
+#       repo: daniool/dms-portfolio
+#       registry: docker.io
+#       username: 
+#         from_secret: docker_usr
+#       password:
+#         from_secret: docker_pswd
+#       tags:
+#         - "1.3"
+#       platforms:
+#         - linux/amd64
+#       dockerfile: dockerfile
+#     depends_on: 
+#       - build-app
 
 
-  - name: redeploy
-    image: curlimages/curl
-    environment:
-      API_KEY:
-        from_secret: portainer_API_key
-      CTR_ID:
-        from_secret: ctr_id  
-    commands :
-      - echo "[INFO] starting redeploy process"
-      - "curl -H \"X-API-Key: $API_KEY\" http://danielmichel-lab.mywire.org/api/stacks/10/git/redeploy?endpointId=3"
-    depends_on: 
-      - build-image
+#   - name: redeploy
+#     image: curlimages/curl
+#     environment:
+#       API_KEY:
+#         from_secret: portainer_API_key
+#       CTR_ID:
+#         from_secret: ctr_id  
+#     commands :
+#       - echo "[INFO] starting redeploy process"
+#       - "curl -H \"X-API-Key: $API_KEY\" http://danielmichel-lab.mywire.org/api/stacks/10/git/redeploy?endpointId=3"
+#     depends_on: 
+#       - build-image
 
 
   
