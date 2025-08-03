@@ -41,10 +41,9 @@ jobs:
           uses: carlrygart/portainer-stack-deploy@v1
           with:
             portainer-host: https://danielmichel-lab.mywire.org
-            username: daniool
+            username: ${{ secrets.PTR_USR}}
             password: ${{ secrets.PTR_API_TOKEN }}
             stack-name: 'dms-portfolio-stack'
             endpoint-id: '3'
             stack-definition: 'docker-compose.yaml'
-            template-variables: '{"username": "MrCool"}'
             image: docker.io/daniool/dms-portfolio:1.3
