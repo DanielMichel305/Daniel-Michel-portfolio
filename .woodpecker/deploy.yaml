@@ -38,9 +38,7 @@ steps:
         from_secret: ctr_id  
     commands :
       - echo "[INFO] starting redeploy process"
-      - "curl -k -X POST   -H \"X-API-Key: $API_KEY\"   -H \"Content-Type: application/json\"   -d '{\"PullImage\": true, \"Force\": true, \"Reuse\" : true, \"ContainerName\" : \"dms-portfolio\"}' https://danielmichel-lab.mywire.org/api/docker/3/containers/dms-portfolio/recreate"
-      - "curl -k -X POST   -H \"X-API-Key: $API_KEY\" https://danielmichel-lab.mywire.org/api/endpoints/3/docker/containers/dms-portfolio-old/rename?name=dms-portfolio"
-      - "curl -k -X POST   -H \"X-API-Key: $API_KEY\" https://danielmichel-lab.mywire.org/api/endpoints/3/docker/containers/dms-portfolio/start"
+      - "curl -H \"X-API-Key: $API_KEY\" https://danielmichel-lab.mywire.org/api/stacks/8/redeploy?endpointId=1"
     depends_on: 
       - build-image
 

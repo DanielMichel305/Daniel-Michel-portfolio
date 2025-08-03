@@ -1,0 +1,24 @@
+version: '3.8'
+
+
+services:
+  portfolio:
+    image: daniool/dms-portfolio:1.3
+    networks:
+      - npm-network
+    volumes:
+      - dms-portfolio-assets:/app/public 
+      - dms-portfolio-dbdata:/app/dist/db
+
+networks:
+  npm-network:
+    external: true
+
+volumes:
+  dms-portfolio-assets:
+    external: true
+      
+  dms-portfolio-dbdata:
+    external: true
+      
+      
