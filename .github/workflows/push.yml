@@ -40,7 +40,7 @@ jobs:
           uses: actions/checkout@v3
 
         - name: Deploy stack to portainer
-          uses: carlrygart/portainer-stack-deploy@v1
+          uses: nvti/portainer-stack-deploy@v1.4
           with:
             portainer-host: https://danielmichel-lab.mywire.org
             username: ${{ secrets.PTR_USR}}
