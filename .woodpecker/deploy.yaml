@@ -1,3 +1,4 @@
+# Currently moved to Github actions for CD until implementing woodpecker push to portainer plugin 
 when:
   - event: [push, manual]
     branch: [main,master]
