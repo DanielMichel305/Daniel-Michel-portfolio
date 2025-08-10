@@ -27,4 +27,6 @@ CmsRouter.get('/login', CmsController.getLoginPage)
 CmsRouter.post('/login', CmsController.loginUser)
 CmsRouter.get('/logout', CmsController.logoutUser)
 
+CmsRouter.get('/assetlib', CmsController.getAssetLibrary);
+
 CmsRouter.use(NotFoundMiddleware);

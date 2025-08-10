@@ -2,9 +2,13 @@ import { Request, Response } from "express";
 import {ExpressFileUpload } from "../types/blog.types";
 import sanitizer from 'sanitize-filename'
 import path from "path";
-import fs from 'fs'
+import fs, { readdir } from 'fs'
 import { BlogPost } from "../Models/blogpost";
 import { Topic } from "../Models/topics";
+import {AssetLib} from '../Models/AssetLib'
+
+
+
 
 
 
@@ -13,6 +17,7 @@ declare module 'express-serve-static-core' {
         files?: {
             [fieldname: string]: ExpressFileUpload | ExpressFileUpload[];
         };
+        
     }
 }
 
@@ -46,6 +51,13 @@ export class CmsController{
         });
     }
 
+
+
+    /**
+     * NEEDS REFACTOR
+     * Move Data Access to AssetLib Controller
+     * 
+     */
     static async UploadMedia(req:Request, res:Response){
         
        
@@ -191,6 +203,28 @@ export class CmsController{
             res.status(500).end('Server Error!')
         }
 
+    }
+
+    static async getAssetLibrary(req: Request, res: Response){
+        /**
+         * REFACTOR REQ:
+         * parse assetType and match/filter file types DONE
+         * include uri DONE
+         * send proper format json DONE
+         * try to limit number of files sent/req (pagination) DONE
+         * search / other filters Later...
+         */
+
+
+        let {assetType} = req.query;
+        
+        let offset = Number(req.query.offset) || 0, limit =Number(req.query.limit) || 5; 
+
+        const files = await AssetLib.getStaticAssets(offset,limit,assetType as string)
+    
+
+        
+        res.send(files)
     }
 
 
