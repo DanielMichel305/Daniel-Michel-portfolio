@@ -2,15 +2,13 @@
   "scripts": {
     "dev": "npx tsx ./src/app.ts",
     "serve": "node ./dist/app.js",
-    "serve-prod" : "sudo systemctl restart DMSPortfolio.service && sudo systemctl status DMSPortfolio.service",
+    "serve-prod": "sudo systemctl restart DMSPortfolio.service && sudo systemctl status DMSPortfolio.service",
     "build": " npx tsc",
-    "build-prod" : "npm install && npx tsc && cp -a ./src/Views/. ./dist/Views/"
+    "build-prod": "npm install && npx tsc && cp -a ./src/Views/. ./dist/Views/"
   },
   "dependencies": {
     "@sequelize/sqlite3": "^7.0.0-alpha.46",
-    "@types/express": "^5.0.3",
-    "@types/sequelize": "^4.28.20",
-    "@types/showdown": "^2.0.6",
+    "cors": "^2.8.5",
     "dotenv": "^16.6.1",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
@@ -21,12 +19,22 @@
     "sequelize": "^6.37.7",
     "showdown": "^2.1.0",
     "sqlite3": "^5.1.7",
-    "tsx": "^4.20.1",
-    "typescript": "^5.8.3"
+    "@emotion/react": "^11.14.0",
+		"@emotion/styled": "^11.14.1",
+		"@mui/material": "^7.3.1",
+		"preact": "^10.26.9",
+		"preact-iso": "^2.9.2"
   },
   "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/sequelize": "^4.28.20",
+    "@types/showdown": "^2.0.6",
+    "@types/cors": "^2.8.19",
     "@types/express-fileupload": "^1.5.1",
     "@types/express-session": "^1.18.2",
-    "cpy-cli": "^5.0.0"
+    "tsx": "^4.20.1",
+    "typescript": "^5.8.3",
+    "cpy-cli": "^5.0.0",
+    "vite": "^7.0.4"
   }
 }
