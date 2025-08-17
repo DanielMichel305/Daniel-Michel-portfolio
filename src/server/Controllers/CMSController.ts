@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import {ExpressFileUpload } from "../types/blog.types";
+import {ExpressFileUpload } from "../../types/blog.types";
 import sanitizer from 'sanitize-filename'
 import path from "path";
 import fs, { readdir } from 'fs'

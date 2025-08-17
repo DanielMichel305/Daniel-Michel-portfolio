@@ -6,35 +6,5 @@
     "build": " npx tsc",
     "build-prod": "npm install && npx tsc && cp -a ./src/Views/. ./dist/Views/"
   },
-  "dependencies": {
-    "@sequelize/sqlite3": "^7.0.0-alpha.46",
-    "cors": "^2.8.5",
-    "dotenv": "^16.6.1",
-    "ejs": "^3.1.10",
-    "express": "^5.1.0",
-    "express-fileupload": "^1.5.1",
-    "express-session": "^1.18.1",
-    "memorystore": "^1.6.7",
-    "sanitize-filename": "^1.6.3",
-    "sequelize": "^6.37.7",
-    "showdown": "^2.1.0",
-    "sqlite3": "^5.1.7",
-    "@emotion/react": "^11.14.0",
-		"@emotion/styled": "^11.14.1",
-		"@mui/material": "^7.3.1",
-		"preact": "^10.26.9",
-		"preact-iso": "^2.9.2"
-  },
-  "devDependencies": {
-    "@types/express": "^5.0.3",
-    "@types/sequelize": "^4.28.20",
-    "@types/showdown": "^2.0.6",
-    "@types/cors": "^2.8.19",
-    "@types/express-fileupload": "^1.5.1",
-    "@types/express-session": "^1.18.2",
-    "tsx": "^4.20.1",
-    "typescript": "^5.8.3",
-    "cpy-cli": "^5.0.0",
-    "vite": "^7.0.4"
-  }
+  "workspaces" : ["src/server", "src/client"]
 }
