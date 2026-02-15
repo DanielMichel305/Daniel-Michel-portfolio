@@ -1,5 +1,10 @@
 {
-    "dependencies": {
+  "scripts": {
+    "dev" : "npx tsx --watch ./app.ts",
+    "build" : "npx tsc"
+    
+  },
+  "dependencies": {
     "@sequelize/sqlite3": "^7.0.0-alpha.46",
     "cors": "^2.8.5",
     "dotenv": "^16.6.1",
@@ -11,7 +16,8 @@
     "sanitize-filename": "^1.6.3",
     "sequelize": "^6.37.7",
     "showdown": "^2.1.0",
-    "sqlite3": "^5.1.7"
+    "sqlite3": "^5.1.7",
+    "http-proxy-middleware": "^3.0.5"
   },
   "devDependencies": {
     "@types/express": "^5.0.3",

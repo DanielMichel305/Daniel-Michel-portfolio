@@ -12,7 +12,7 @@ interface fileData{
 
 export class AssetLib{
 
-    private static baseAssetPath = path.join(__dirname, '../../public/assets/');
+    private static baseAssetPath = path.join(__dirname, '../../../public/assets/');
 
     private static assetTypeRegex = {
             "images" : "webp|jpeg|jpg|png|gif|ico",
