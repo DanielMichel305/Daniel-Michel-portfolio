@@ -1,0 +1,75 @@
+
+
+<div>
+
+    <h3>Asset Library</h3>
+    <label for="itemNo">Items per page</label>
+    <select id="itemNo" name="assets_p_page" id="">
+        <option value=5 selected>5</option>
+        <option value=10>10</option>
+        <option value=15>15</option>
+    </select>
+     <!-- <img src="" alt="" height="150"> -->
+    
+    
+     <div id="assets">
+
+
+    </div>
+    <!-- <button onclick=fetchAssets()>Load More</button> -->
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/ejs/ejs.min.js"></script>
+<script>
+
+
+
+
+///////////
+    let offset=0, limit=Number(document.getElementById('itemNo').value)
+
+
+
+
+
+    function fetchAssets(){
+
+        console.log(`loading assets offset: ${offset} AND Limit: ${limit}`)
+        fetch(`/admin/cms/assetLib?offset=${offset}&limit=${limit}`)
+        .then(res=>res.json())
+        .then(data=>{
+            data.forEach(asset => {
+                const AssetItemTemplate= `
+                    <div style="border: 5px; border-style: double;">
+                        <h4 style="margin-bottom:0%; padding-bottom:0px">Name: ${asset.name}</h4>
+                        <h5>Uri: ${asset.uri}</h5>
+
+                        <h5>Asset type: ${asset.fileType}</h5>
+                         <%if(asset.fileType.match("webp|jpeg|jpg|png|gif|ico")){%>
+                             <img src="${asset.uri}" alt="${asset.name}" height="150px" ">
+
+                         <%}%>
+                        </div>`
+            
+            document.getElementById('assets').innerHTML += AssetItemTemplate
+
+            });
+            offset = limit
+            limit +=5
+        })
+    }
+
+    document.getElementById('itemNo').addEventListener("change", ()=>{
+         document.getElementById('assets').innerHTML ="";
+         offset=0
+         limit=Number(document.getElementById('itemNo').value)
+         fetchAssets()
+    })
+    
+    
+    fetchAssets()
+    
+
+    
+
+</script>

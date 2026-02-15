@@ -1,5 +1,6 @@
 import express, {Application, Request,Response} from 'express'
 import Session  from 'express-session';
+import cors from "cors";
 import { BlogController } from './Controllers/blogController';
 import { NotFoundMiddleware } from './Middleware/404';
 
@@ -23,7 +24,7 @@ app.use(fileUpload())
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json())
 app.use(express.static(path.join(__dirname, '../public')))
-
+app.use(cors({ origin: "http://localhost:5173" })); ////Change
 
 const sessionMemoryStore = createMemoryStore(Session)
 

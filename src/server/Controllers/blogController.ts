@@ -1,7 +1,7 @@
 import {Request,Response} from 'express'
 import { BlogPost } from '../Models/blogpost'
 import { Topic } from '../Models/topics'
-import { BlogRenderSchema, CreateBlogRequestSchema } from '../types/blog.types'
+import { BlogRenderSchema, CreateBlogRequestSchema } from '../../types/blog.types'
 import Showdown from 'showdown'
 import { UniqueConstraintError } from '@sequelize/core';
 import { col, fn, literal } from 'sequelize'

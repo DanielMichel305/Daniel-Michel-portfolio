@@ -1,32 +1,20 @@
 {
   "scripts": {
-    "dev": "npx tsx ./src/app.ts",
+    
     "serve": "node ./dist/app.js",
-    "serve-prod" : "sudo systemctl restart DMSPortfolio.service && sudo systemctl status DMSPortfolio.service",
-    "build": " npx tsc",
-    "build-prod" : "npm install && npx tsc && cp -a ./src/Views/. ./dist/Views/"
-  },
-  "dependencies": {
-    "@sequelize/sqlite3": "^7.0.0-alpha.46",
-    "@types/express": "^5.0.3",
-    "@types/sequelize": "^4.28.20",
-    "@types/showdown": "^2.0.6",
-    "dotenv": "^16.6.1",
-    "ejs": "^3.1.10",
-    "express": "^5.1.0",
-    "express-fileupload": "^1.5.1",
-    "express-session": "^1.18.1",
-    "memorystore": "^1.6.7",
-    "sanitize-filename": "^1.6.3",
-    "sequelize": "^6.37.7",
-    "showdown": "^2.1.0",
-    "sqlite3": "^5.1.7",
-    "tsx": "^4.20.1",
-    "typescript": "^5.8.3"
+    "serve-prod": "sudo systemctl restart DMSPortfolio.service && sudo systemctl status DMSPortfolio.service",
+    "build:server": "npm --prefix src/server run build",
+    "build:client": "npm --prefix src/client run build",
+    "build-prod": "npm install && npx tsc && cp -a ./src/Views/. ./dist/Views/",
+    "dev:client" : "npm --prefix src/client run dev",
+    "dev:server" : "npm --prefix src/server run dev",
+    "dev": "concurrently \"npm:dev:*\" ",
+    "build" : "npm run build:server && npm run build:client",
+    "start": "node ./dist/server/app.js"
+
   },
   "devDependencies": {
-    "@types/express-fileupload": "^1.5.1",
-    "@types/express-session": "^1.18.2",
-    "cpy-cli": "^5.0.0"
-  }
+     "concurrently": "^8.0.0"
+  },
+  "workspaces" : ["src/server", "src/client"]
 }
