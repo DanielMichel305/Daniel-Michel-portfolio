@@ -1,9 +1,8 @@
 {
   "scripts": {
     "serve": "node ./dist/app.js",
-    "serve-prod": "sudo systemctl restart DMSPortfolio.service && sudo systemctl status DMSPortfolio.service",
     "build:server": "npm --prefix src/server run build",
-    "build-prod": "npm install && npm audit fix && npx tsc && cp -a ./src/server/Views/. ./dist/Views/",
+    "build-prod": "npm install && npm audit fix && npx tsc && cp -a ./src/server/Views/. ./dist/server/Views/",
     "dev:server": "npm --prefix src/server run dev",
     "dev": "concurrently \"npm:dev:*\" ",
     "build": "npm run build:server && npm run build:client",
