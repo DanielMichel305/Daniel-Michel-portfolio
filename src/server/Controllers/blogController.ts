@@ -1,8 +1,9 @@
 import {Request,Response} from 'express'
 import { BlogPost } from '../Models/blogpost'
 import { Topic } from '../Models/topics'
-import { BlogRenderSchema, CreateBlogRequestSchema } from '../../types/blog.types'
-import Showdown from 'showdown'
+import {CreateBlogRequestSchema } from '../../types/blog.types'
+import {marked} from 'marked'
+import DOMPurify from "isomorphic-dompurify";
 import { UniqueConstraintError } from 'sequelize';
 
 export class BlogController{
@@ -92,15 +93,16 @@ export class BlogController{
             res.status(404).render("404");
         }
         else{
-            let converter =  new Showdown.Converter({headerLevelStart : 2});
-            converter.setFlavor('github')
-            const renderedBlogContent = converter.makeHtml(blog.markdown_source);   
+            const rawRenderedContent =  await marked.parse(blog.markdown_source);
+            
+            let sanitizedBlogContent =  DOMPurify.sanitize(rawRenderedContent);
+            
 
             res.status(200).render('blog', {
                 title : blog.blogTitle,
                 created_at : blog.createdAt.toDateString(),
                 topics : blog.topics,
-                blog_content : renderedBlogContent
+                blog_content : sanitizedBlogContent
             });
         }
         
@@ -110,4 +112,5 @@ export class BlogController{
         res.status(200).render('minigame');
     }
 }
+
 

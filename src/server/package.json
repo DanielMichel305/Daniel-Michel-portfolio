@@ -16,7 +16,6 @@
     "memorystore": "^1.6.7",
     "sanitize-filename": "^1.6.3",
     "sequelize": "^6.37.7",
-    "showdown": "^2.1.0",
     "better-sqlite3": "12.6.2"
   },
   "devDependencies": {
@@ -25,7 +24,6 @@
     "@types/express-fileupload": "^1.5.1",
     "@types/express-session": "^1.18.2",
     "@types/sequelize": "^4.28.20",
-    "@types/showdown": "^2.0.6",
     "cpy-cli": "^5.0.0",
     "tsx": "^4.20.1",
     "typescript": "^5.8.3"
