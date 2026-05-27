@@ -1,5 +1,5 @@
 import { statSync } from "fs";
-import { readdir, stat } from "fs/promises";
+import { readdir, stat, unlink} from "fs/promises";
 import path from "path";
 
 interface fileData{
@@ -63,6 +63,23 @@ export class AssetLib{
             }
         }
         return files;
+
+
+    }
+
+    public static async deleteAsset(assetName: string){ ///Use URI?
+
+        const filename = path.basename(assetName).split('.')[0] 
+        const fileExtension = path.extname(assetName).split('.').slice(-1)[0]
+        
+        
+
+
+        const existingfiles = await readdir(AssetLib.baseAssetPath)
+        if(!existingfiles.includes(assetName)){
+            throw new Error('File Not Found')
+        }
+
 
 
     }

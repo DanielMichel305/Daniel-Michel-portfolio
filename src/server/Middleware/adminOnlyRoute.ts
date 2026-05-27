@@ -1,5 +1,5 @@
 import {Request, Response, NextFunction } from "express";
-import session from 'express-session'
+
 
 export function adminOnlyRouteMiddleware(req: Request, res: Response, next: NextFunction){
     

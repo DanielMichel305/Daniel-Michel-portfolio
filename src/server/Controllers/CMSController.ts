@@ -223,11 +223,21 @@ export class CmsController{
         let offset = Number(req.query.offset) || 0, limit =Number(req.query.limit) || 5; 
 
         const files = await AssetLib.getStaticAssets(offset,limit,assetType as string)
-    
+        
 
         
-        res.send(files)
+        res.render('assetLib', {assets : files, offset, limit, assetType: assetType || ''})
     }
-
-
+    static RenderV2Dashboard(req: Request, res: Response){
+        
+            const frontendPath = path.join(__dirname, "../../client");
+            res.sendFile(path.join(frontendPath, "index.html"));
+        
+       
+    }
+    static async deleteAsset(req: Request, res: Response){
+    
+        
+    }
 }
+

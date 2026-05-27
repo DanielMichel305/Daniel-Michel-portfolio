@@ -23,8 +23,6 @@
 <script>
 
 
-
-
 ///////////
     let offset=0, limit=Number(document.getElementById('itemNo').value)
 
@@ -35,20 +33,22 @@
     function fetchAssets(){
 
         console.log(`loading assets offset: ${offset} AND Limit: ${limit}`)
+
+        
         fetch(`/admin/cms/assetLib?offset=${offset}&limit=${limit}`)
-        .then(res=>res.json())
+        .then((res)=>{
+            console.log(res)
+            return res.json()
+            
+        })
         .then(data=>{
             data.forEach(asset => {
                 const AssetItemTemplate= `
                     <div style="border: 5px; border-style: double;">
-                        <h4 style="margin-bottom:0%; padding-bottom:0px">Name: ${asset.name}</h4>
-                        <h5>Uri: ${asset.uri}</h5>
+                        <h4 style="margin-bottom:0%; padding-bottom:0px">Name:</h4>
+                        <h5>Uri: </h5>
 
-                        <h5>Asset type: ${asset.fileType}</h5>
-                         <%if(asset.fileType.match("webp|jpeg|jpg|png|gif|ico")){%>
-                             <img src="${asset.uri}" alt="${asset.name}" height="150px" ">
-
-                         <%}%>
+                        
                         </div>`
             
             document.getElementById('assets').innerHTML += AssetItemTemplate
@@ -57,12 +57,14 @@
             offset = limit
             limit +=5
         })
+        .catch(e=>console.log(`Error: ${e}`))
     }
 
     document.getElementById('itemNo').addEventListener("change", ()=>{
          document.getElementById('assets').innerHTML ="";
          offset=0
          limit=Number(document.getElementById('itemNo').value)
+         
          fetchAssets()
     })
     

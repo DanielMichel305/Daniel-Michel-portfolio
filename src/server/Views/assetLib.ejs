@@ -1,0 +1,321 @@
+<style>
+    .asset-controls {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 0;
+        margin-bottom: 0.5rem;
+        border-bottom: 1px solid #ddd;
+        flex-wrap: wrap;
+    }
+
+    .asset-controls label {
+        color: #000;
+        font-size: 0.85rem;
+    }
+
+    .asset-controls select {
+        background: #2a2a2a;
+        color: #eee;
+        border: 1px solid #444;
+        border-radius: 4px;
+        padding: 0.4rem 0.6rem;
+        font-size: 0.85rem;
+    }
+
+    .asset-controls select:focus {
+        outline: none;
+        border-color: #6a9ef5;
+    }
+
+    .asset-pagination {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1rem 0;
+        margin-bottom: 0.5rem;
+    }
+
+    .asset-pagination a {
+        background: #2a2a2a;
+        color: #eee;
+        border: 1px solid #444;
+        border-radius: 4px;
+        padding: 0.45rem 1rem;
+        font-size: 0.85rem;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background 0.15s ease, border-color 0.15s ease;
+    }
+
+    .asset-pagination a:hover {
+        background: #3a3a3a;
+        border-color: #6a9ef5;
+    }
+
+    .asset-pagination a.disabled {
+        opacity: 0.4;
+        pointer-events: none;
+        cursor: not-allowed;
+    }
+
+    .asset-pagination__info {
+        color: #000;
+        font-size: 0.8rem;
+    }
+
+    .asset-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 1.25rem;
+        padding: 1rem 0;
+    }
+
+    .asset-card {
+        background: #1e1e1e;
+        border: 1px solid #333;
+        border-radius: 8px;
+        overflow: hidden;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .asset-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    }
+
+    .asset-card__preview {
+        width: 100%;
+        height: 180px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #2a2a2a;
+        overflow: hidden;
+    }
+
+    .asset-card__preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .asset-card__preview--pdf {
+        flex-direction: column;
+        gap: 0.5rem;
+        color: #ccc;
+    }
+
+    .asset-card__preview--pdf svg {
+        width: 56px;
+        height: 56px;
+        fill: #e04040;
+    }
+
+    .asset-card__info {
+        padding: 0.75rem 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .asset-card__name {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #eee;
+        word-break: break-word;
+        margin: 0;
+    }
+
+    .asset-card__type {
+        font-size: 0.75rem;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin: 0;
+    }
+
+    .asset-empty {
+        color: #888;
+        text-align: center;
+        padding: 3rem 1rem;
+        font-size: 0.95rem;
+    }
+
+    .asset-upload {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1rem 0;
+        margin-bottom: 0.5rem;
+        border-bottom: 1px solid #ddd;
+        flex-wrap: wrap;
+    }
+
+    .asset-upload__label {
+        background: #2563eb;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: background 0.15s ease;
+    }
+
+    .asset-upload__label:hover {
+        background: #1d4ed8;
+    }
+
+    .asset-upload__input {
+        display: none;
+    }
+
+    .asset-upload__btn {
+        background: #16a34a;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: background 0.15s ease;
+        display: none;
+    }
+
+    .asset-upload__btn:hover {
+        background: #15803d;
+    }
+
+    .asset-upload__status {
+        font-size: 0.8rem;
+        color: #888;
+    }
+</style>
+
+<% const basePath = '/admin/cms/assetlib'; %>
+
+<div>
+    <h1>Assets Library</h1>
+
+    <!-- Controls: Filter by type & limit -->
+    <div class="asset-controls">
+        <label>File Type:</label>
+        <select onchange="var q=this.value?'assetType='+this.value+'&':''; window.location.href='<%= basePath %>?'+q+'offset=0&limit=<%= limit || 20 %>'">
+            <option value="" <%= !assetType ? 'selected' : '' %>>All</option>
+            <option value="images" <%= assetType === 'images' ? 'selected' : '' %>>Images</option>
+            <option value="pdf" <%= assetType === 'pdf' ? 'selected' : '' %>>PDF</option>
+        </select>
+
+        <label>Per Page:</label>
+        <% const perPageTypeQuery = assetType ? 'assetType=' + assetType + '&' : ''; %>
+        <select onchange="window.location.href='<%= basePath %>?<%= perPageTypeQuery %>offset=0&limit='+this.value">
+            <% [5, 10, 20, 50].forEach(n => { %>
+                <option value="<%= n %>" <%= limit === n ? 'selected' : '' %>><%= n %></option>
+            <% }) %>
+        </select>
+    </div>
+
+    <!-- Upload -->
+    <div class="asset-upload">
+        <label class="asset-upload__label" for="uploadInput">Choose Files</label>
+        <input class="asset-upload__input" type="file" id="uploadInput" name="image" multiple accept="image/jpeg,image/png,image/gif,image/webp" />
+        <button class="asset-upload__btn" id="uploadBtn">Upload</button>
+        <span class="asset-upload__status" id="uploadStatus"></span>
+    </div>
+
+    <!-- Pagination -->
+    <div class="asset-pagination">
+        <% const typeQuery = assetType ? 'assetType=' + assetType + '&' : ''; %>
+        <a href="<%= basePath %>?<%= typeQuery %>offset=<%= Math.max(0, offset - limit) %>&limit=<%= limit %>"
+           class="<%= offset <= 0 ? 'disabled' : '' %>">
+            &#8592; Previous
+        </a>
+        <span class="asset-pagination__info">
+            Showing <%= offset + 1 %>&ndash;<%= offset + assets.length %>
+        </span>
+        <a href="<%= basePath %>?<%= typeQuery %>offset=<%= offset + limit %>&limit=<%= limit %>"
+           class="<%= assets.length < limit ? 'disabled' : '' %>">
+            Next &#8594;
+        </a>
+    </div>
+
+    <!-- Asset Grid -->
+    <% if (assets.length > 0) { %>
+    <div class="asset-grid">
+        <% assets.forEach(asset => { %>
+            <div class="asset-card">
+                <div class="asset-card__preview <% if (asset.fileType === 'pdf') { %>asset-card__preview--pdf<% } %>">
+                    <% if (['webp','jpeg','jpg','png','gif','ico'].includes(asset.fileType)) { %>
+                        <img src="<%= asset.uri %>" alt="<%= asset.name %>" loading="lazy" />
+                    <% } else if (asset.fileType === 'pdf') { %>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-pdf" viewBox="0 0 16 16">
+                            <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1"/>
+                            <path d="M4.603 12.087a.8.8 0 0 1-.438-.42c-.195-.388-.13-.776.08-1.102.198-.307.526-.568.897-.787a7.7 7.7 0 0 1 1.482-.645 20 20 0 0 0 1.062-2.227 7.3 7.3 0 0 1-.43-1.295c-.086-.4-.119-.796-.046-1.136.075-.354.274-.672.65-.823.192-.077.4-.12.602-.077a.7.7 0 0 1 .477.365c.088.164.12.356.127.538.007.187-.012.395-.047.614-.084.51-.27 1.134-.52 1.794a11 11 0 0 0 .98 1.686 5.8 5.8 0 0 1 1.334.05c.364.065.734.195.96.465.12.144.193.32.2.518.007.192-.047.382-.138.563a1.04 1.04 0 0 1-.354.416.86.86 0 0 1-.51.138c-.331-.014-.654-.196-.933-.417a5.7 5.7 0 0 1-.911-.95 11.6 11.6 0 0 0-1.997.406 11.3 11.3 0 0 1-1.021 1.51c-.29.35-.608.655-.926.787a.8.8 0 0 1-.58.029m1.379-1.901q-.25.115-.459.238c-.328.194-.541.383-.647.547-.094.145-.096.25-.04.361q.016.032.026.044l.035-.012c.137-.056.355-.235.635-.572a8 8 0 0 0 .45-.606m1.64-1.33a13 13 0 0 1 1.01-.193 12 12 0 0 1-.51-.858 21 21 0 0 1-.5 1.05zm2.446.45q.226.244.435.41c.24.19.407.253.498.256a.1.1 0 0 0 .07-.015.3.3 0 0 0 .094-.125.44.44 0 0 0 .059-.2.1.1 0 0 0-.026-.063c-.052-.062-.2-.152-.518-.209a4 4 0 0 0-.612-.053zM8.078 5.8a7 7 0 0 0 .2-.828q.046-.282.038-.465a.6.6 0 0 0-.032-.198.5.5 0 0 0-.145.04c-.087.035-.158.106-.196.283-.04.192-.03.469.046.822q.036.167.09.346z"/>
+                        </svg>
+                        <span>PDF</span>
+                    <% } else { %>
+                        <span style="color:#888; font-size:2rem;">📄</span>
+                    <% } %>
+                </div>
+                <div class="asset-card__info">
+                    <p class="asset-card__name"><%= asset.name %></p>
+                    <p class="asset-card__type"><%= asset.fileType %></p>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+    <% } else { %>
+        <p class="asset-empty">No assets found.</p>
+    <% } %>
+</div>
+
+<script>
+    const uploadInput = document.getElementById('uploadInput');
+    const uploadBtn = document.getElementById('uploadBtn');
+    const uploadStatus = document.getElementById('uploadStatus');
+
+    uploadInput.addEventListener('change', function() {
+        if (this.files.length > 0) {
+            uploadBtn.style.display = 'inline-block';
+            uploadStatus.textContent = this.files.length + ' file(s) selected';
+        } else {
+            uploadBtn.style.display = 'none';
+            uploadStatus.textContent = '';
+        }
+    });
+
+    uploadBtn.addEventListener('click', async function() {
+        const files = uploadInput.files;
+        if (!files.length) return;
+
+        const formData = new FormData();
+        for (const file of files) {
+            formData.append('image', file);
+        }
+
+        uploadBtn.disabled = true;
+        uploadStatus.textContent = 'Uploading...';
+
+        try {
+            const res = await fetch('/admin/cms/upload', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await res.json();
+
+            if (res.ok) {
+                uploadStatus.textContent = data.message || 'Upload successful!';
+                setTimeout(() => window.location.reload(), 800);
+            } else {
+                uploadStatus.textContent = data.message || 'Upload failed.';
+            }
+        } catch (err) {
+            uploadStatus.textContent = 'Upload failed: ' + err.message;
+        } finally {
+            uploadBtn.disabled = false;
+        }
+    });
+</script>

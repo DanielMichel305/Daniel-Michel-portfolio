@@ -27,10 +27,7 @@
             <%- include('partials/dashboard/blogList') %>
         </div>
 
-        <div id="assetLib" style="display: none;">
-            <%- include('partials/dashboard/assetLib') %>
-        </div>
-
+        
         <div></div>
     </div>
 
@@ -45,7 +42,9 @@
 
         document.getElementById("newBlogBtn").addEventListener('click',()=> ShowCorrectPartial(PartialTypes.CreateBlogPartial))
         document.getElementById("myBlogsBtn").addEventListener('click', ()=> ShowCorrectPartial(PartialTypes.BlogListPartial))
-        document.getElementById("mediaBtn").addEventListener('click', ()=> ShowCorrectPartial(PartialTypes.MediaLibraryPartial))
+        document.getElementById("mediaBtn").addEventListener('click', ()=> {
+            window.location.href = "/admin/cms/assetLib"
+        })
 
         function ShowCorrectPartial(partialType){
             let partials = document.getElementById('root')
@@ -57,15 +56,13 @@
             switch (partialType) {
                 case PartialTypes.CreateBlogPartial:
                     document.getElementById('createBlog').style.display = 'block'
-                    console.log(1)
+                    
                     break;
                 case PartialTypes.BlogListPartial:
                     document.getElementById('blogList').style.display = 'block'
-                    console.log(2)
                     break 
                 default:
                     document.getElementById('assetLib').style.display = 'block'
-                    console.log(3)
                     break;
             }
         }
