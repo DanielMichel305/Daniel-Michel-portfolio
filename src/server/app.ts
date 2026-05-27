@@ -1,21 +1,23 @@
 import express, {Application, Request,Response} from 'express'
 import Session  from 'express-session';
+import dotenv from 'dotenv'
+
+
+
 import cors from "cors";
-import { BlogController } from './Controllers/blogController';
-import { NotFoundMiddleware } from './Middleware/404';
-
 import createMemoryStore from 'memorystore'
-
 import fileUpload from 'express-fileupload'
 import path from 'path'
 
 
 import './Models/blogPostTopics'
 import { CmsRouter } from './routers/CmsRouter';
+import { BlogController } from './Controllers/blogController';
+import { NotFoundMiddleware } from './Middleware/404';
+import { adminOnlyRouteMiddleware } from './Middleware/adminOnlyRoute';
 
 
-
-require('dotenv').config()
+dotenv.config({ path: '../../.env' });
 
 const app: Application = express(); 
 
@@ -23,8 +25,7 @@ const app: Application = express();
 app.use(fileUpload())
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json())
-app.use(express.static(path.join(__dirname, '../public')))
-app.use(cors({ origin: "http://localhost:5173" })); ////Change
+app.use(express.static(path.join(__dirname, '../../public')))
 
 const sessionMemoryStore = createMemoryStore(Session)
 
@@ -46,16 +47,17 @@ app.use(Session({
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'Views'))
 
-app.use('/admin/cms', CmsRouter)
 
 
 
+
+app.use('/admin/cms',CmsRouter)
 
 
 app.get('/blogs', BlogController.getAllBlogs)
 app.get('/minigame', BlogController.getMiniGame)
 app.get('/b/:blogId', BlogController.getBlogById)
-app.post('/create', BlogController.createNewBlogPost)
+app.post('/create',adminOnlyRouteMiddleware, BlogController.createNewBlogPost)
 
 
 app.get('/', (req: Request, res: Response)=>{
@@ -66,6 +68,7 @@ app.get('/', (req: Request, res: Response)=>{
 app.get('/projects', (req: Request, res: Response)=>{
   res.render('projects')
 })
+
 
 app.use(NotFoundMiddleware);
 

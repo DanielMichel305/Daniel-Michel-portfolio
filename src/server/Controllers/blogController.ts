@@ -3,8 +3,7 @@ import { BlogPost } from '../Models/blogpost'
 import { Topic } from '../Models/topics'
 import { BlogRenderSchema, CreateBlogRequestSchema } from '../../types/blog.types'
 import Showdown from 'showdown'
-import { UniqueConstraintError } from '@sequelize/core';
-import { col, fn, literal } from 'sequelize'
+import { UniqueConstraintError } from 'sequelize';
 
 export class BlogController{
     static async getAllBlogs(req: Request, res: Response){
@@ -20,7 +19,8 @@ export class BlogController{
                     model : Topic,
                     attributes : ['topic'],
                     through : {attributes:[]
-                    }
+                    },
+                        as : 'topics'
                 },
                 limit:10,order : [['createdAt', 'DESC']]}) as (BlogPost & {topics : Topic[]})[];
                 

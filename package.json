@@ -1,20 +1,30 @@
 {
   "scripts": {
-    
     "serve": "node ./dist/app.js",
     "serve-prod": "sudo systemctl restart DMSPortfolio.service && sudo systemctl status DMSPortfolio.service",
     "build:server": "npm --prefix src/server run build",
-    "build:client": "npm --prefix src/client run build",
-    "build-prod": "npm install && npx tsc && cp -a ./src/Views/. ./dist/Views/",
-    "dev:client" : "npm --prefix src/client run dev",
-    "dev:server" : "npm --prefix src/server run dev",
+    "build-prod": "npm install && npm audit fix && npx tsc && cp -a ./src/server/Views/. ./dist/Views/",
+    "dev:server": "npm --prefix src/server run dev",
     "dev": "concurrently \"npm:dev:*\" ",
-    "build" : "npm run build:server && npm run build:client",
+    "build": "npm run build:server && npm run build:client",
     "start": "node ./dist/server/app.js"
-
   },
   "devDependencies": {
-     "concurrently": "^8.0.0"
+    "concurrently": "^8.0.0"
   },
-  "workspaces" : ["src/server", "src/client"]
+  "workspaces": [
+    "src/server"
+  ],
+  "dependencies": {
+    "@sequelize/core": "^7.0.0-alpha.48",
+    "@sequelize/sqlite3": "^7.0.0-alpha.48",
+    "@types/better-sqlite3": "^7.6.13",
+    "better-sqlite3": "^12.6.2"
+  },
+  "overrides": {
+    "tar": "^7.5.11",
+    "uuid" : "13.0.1",
+    "@tootallnate/once": "^2.0.1"
+  }
 }
+
