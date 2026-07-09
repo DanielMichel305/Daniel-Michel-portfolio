@@ -54,9 +54,9 @@ app.set('views', path.join(__dirname, 'Views'))
 app.use('/admin/cms',CmsRouter)
 
 
-//app.get('/blogs', BlogController.getAllBlogs)
+app.get('/blogs', BlogController.getAllBlogs)
 app.get('/minigame', BlogController.getMiniGame)
-//app.get('/b/:blogId', BlogController.getBlogById)
+app.get('/b/:blogId', BlogController.getBlogById)
 app.post('/create',adminOnlyRouteMiddleware, BlogController.createNewBlogPost)
 
 
