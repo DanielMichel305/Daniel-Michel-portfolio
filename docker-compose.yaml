@@ -5,6 +5,8 @@ services:
   portfolio:
     image: daniool/dms-portfolio:latest
     pull_policy: always
+    ports:
+      - 8080:8080
     hostname: portfolio-st
     networks:
       - npm-network
